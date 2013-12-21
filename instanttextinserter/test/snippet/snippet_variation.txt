@@ -1,0 +1,24 @@
+===1line===
+this is the phrase consisting of 1-line.
+===nline===
+ns‚©‚ç‚È‚é’èŒ^•¶.
+‚Æ‚è‚ ‚¦‚¸
+3s‚Å.
+=1 beginmark===
+ok
+=1 endmark=
+ok
+=no endmark
+ng
+===no beginmark test=
+no beginmark=
+if there is not beginmark, it is not a snippet.
+===emptysnippet===
+===nline contains empty linesep===
+hoge
+
+‚Ó‚ª
+
+
+
+piyo

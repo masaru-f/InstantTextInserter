@@ -1,0 +1,14 @@
+====for@====
+for elm in %cursor%:
+====init@====
+def __init__(self):
+    pass
+====defenc@====
+import sys
+
+if hasattr(sys, 'setdefaultencoding'):
+    import locale
+    lang, enc = locale.getdefaultlocale()
+    sys.setdefaultencoding(enc or 'shift-jis')
+    del sys.setdefaultencoding
+%cursor%

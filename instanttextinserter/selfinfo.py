@@ -1,0 +1,19 @@
+# encoding: shift-jis
+
+import os
+import sys
+
+# Program Information
+PROGRAM_NAME = "instant text inserter"
+VERSION = "0.0.1"
+AUTHOR = "shouh"
+PROGRAM_INFO = PROGRAM_NAME + " " + "v" + VERSION + " (c) " + AUTHOR
+
+# Program pathes
+PROGRAM_FULLPATH = sys.argv[0]
+PROGRAM_DIRECTORY = os.path.dirname(PROGRAM_FULLPATH)
+
+# Files path
+# Ç±Ç±Ç…íuÇ≠Ç◊Ç´Ç©Ç«Ç§Ç©ñ¿Ç¡ÇΩÇØÇ«
+# àÍå≥ä«óùÇ≈Ç´ÇÈÇÃÇ≈Ç∆ÇËÇ†Ç¶Ç∏Ç±Ç±Ç≈...
+SNIPPETFOLDER_FULLPATH = os.path.join(PROGRAM_DIRECTORY, "snippet")
