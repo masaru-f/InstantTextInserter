@@ -15,6 +15,7 @@ CMD_OPEN_DIRECTORY = "dir"
 CMD_SHOW_VERSION   = "version"
 CMD_QUIT           = "quit"
 CMD_RELOAD_SNIPPET = "reload_snippet"
+CMD_OPEN_SNIPPET_DIRECTORY = "snippet_directory"
 
 class StartingPointCommander(commander_interface.ICommander):
     """
@@ -90,6 +91,22 @@ class ReloadSnippetCommander(commander_interface.ICommander):
     def _interpret(self, command):
         snippet_loader.inst.reload()
 
+class OpenSnippetDirectoryCommander(commander_interface.ICommander):
+    """
+    インストールフォルダを開く.
+    """
+    def __init__(self, next_commander=None):
+        commander_interface.ICommander.__init__(self, next_commander)
+
+    def _can_interpret(self, command):
+        if command==CMD_OPEN_SNIPPET_DIRECTORY:
+            return True
+        return False
+
+    def _interpret(self, command):
+        _executer = executer.Executer()
+        _executer.execute([selfinfo.SNIPPETFOLDER_FULLPATH])
+
 if __name__ == '__main__':
     """
     簡単なテスト.
@@ -103,9 +120,11 @@ if __name__ == '__main__':
     opendir = OpenDirectoryCommander(exitcmd)
     ver = VersionCommander(opendir)
     reloadsnippet = ReloadSnippetCommander(ver)
-    sp = StartingPointCommander(reloadsnippet)
+    opensnidir = OpenSnippetDirectoryCommander(reloadsnippet)
+    sp = StartingPointCommander(opensnidir)
 
     #sp.run(CMD_OPEN_DIRECTORY)
     #sp.run(CMD_SHOW_VERSION)
     #sp.run(CMD_RELOAD_SNIPPET)
-    sp.run(CMD_QUIT)
+    #sp.run(CMD_OPEN_SNIPPET_DIRECTORY)
+    #sp.run(CMD_QUIT)

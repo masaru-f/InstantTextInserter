@@ -188,7 +188,7 @@ class MainWindow:
     def stop(self):
         """
         GUI ループから抜ける.
-        @note ウィンドウを作成スレッドと別のスレッドから呼び出してもよい.
+        @note ウィンドウを作成したスレッドと別のスレッドから呼び出してもよい.
         """
         log.debug("mainwindow stop!")
         self._mainloop.stop(self._hwnd)

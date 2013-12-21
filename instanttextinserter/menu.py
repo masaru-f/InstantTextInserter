@@ -23,8 +23,11 @@ class Menu:
         """
         creator = popupmenu.Creator()
         creator.append("Reload", commander_system.CMD_RELOAD_SNIPPET)
-        creator.append("Open snippet folder", "snippetfolder")
-        creator.append("Open snippet [hoge]", "currentsnippet")
+        creator.append(
+            "Open snippet folder",
+            commander_system.CMD_OPEN_SNIPPET_DIRECTORY
+        )
+        #creator.append("Open snippet [hoge]", "currentsnippet")
         creator.append_separator()
         creator.append("Open IntallDir", commander_system.CMD_OPEN_DIRECTORY)
         creator.append("Version", commander_system.CMD_SHOW_VERSION)
