@@ -1,10 +1,3 @@
-
-"""
-SnippetManager の keycode2chara を作るコード.
-標準出力に出てきたものを丸々コピペするだけ.
-
-"""
-
 INVALID_CHAR = "?"
 def keycode2chara(keycode):
     c = INVALID_CHAR
@@ -71,6 +64,10 @@ class FileWriter:
 # --------------------------------
 
 def printlist():
+    """
+    SnippetManager に持たせるリストを作る.
+    これで出力した文字列を丸々コピペする.
+    """
     s = ""
     for i in range(256):
         c = keycode2chara(i)

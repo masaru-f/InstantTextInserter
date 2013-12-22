@@ -93,7 +93,7 @@ class ReloadSnippetCommander(commander_interface.ICommander):
 
 class OpenSnippetDirectoryCommander(commander_interface.ICommander):
     """
-    インストールフォルダを開く.
+    スニペットフォルダを開く.
     """
     def __init__(self, next_commander=None):
         commander_interface.ICommander.__init__(self, next_commander)

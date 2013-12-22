@@ -65,12 +65,7 @@ class SnippetManager:
 
             # 入力文字が部分一致しているか調べる
             # 一致しなかったら最初からやり直し
-            #character = chr(keycode) # characterは大文字
-            #
-            # @todo いっそのこと文字変換なんかしなくとも
-            # 直接キーコードを代入してしまえばいいんじゃなかろうか...
             character = SnippetManager.keycode2chara[keycode]
-
             if self._abbrlist[i][self._inputlist[i]] != character:
                 self._inputlist[i] = 0
                 continue
@@ -79,10 +74,9 @@ class SnippetManager:
             # 完全一致時の処理を行った後,
             # それまでの部分一致情報を全てクリアする.
             if abbr_len-1 == self._inputlist[i]:
-                '''
-                print "hit:" + self._abbrlist[i]
-                print "phrase:" + self._phraselist[i]
-                '''
+                # デバッグ用
+                #print "hit:" + self._abbrlist[i]
+                #print "phrase:" + self._phraselist[i]
                 self._paster.paste(self._abbrlist[i], self._phraselist[i])
                 self._clear_all_input()
                 break
@@ -90,9 +84,8 @@ class SnippetManager:
             # 比較する場所を一つずらす
             self._inputlist[i] += 1
 
-        # @note デバッグ用.
-        # @todo 用が済んだら消す.
-        print self._inputlist
+        # デバッグ用.
+        #print self._inputlist
 
     def _clear_all_input(self):
         for j in range(self._list_len):

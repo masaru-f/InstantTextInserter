@@ -9,6 +9,7 @@ import os
 
 import util.filereader as filereader
 
+import dialog_wrapper
 import selfinfo
 import snippet_observer
 
@@ -143,10 +144,11 @@ class SnippetLoader:
         try:
             file_content_list = _load_and_merge()
         except IOError as e:
-            # @note 今は print で手抜き.
-            # @todo ユーザに注意喚起する.
-            print "reloading was failed. bacause ",
-            print str(e)
+            dialog_wrapper.ok(
+                "スニペットを読み込むことができません." + os.linesep +
+                selfinfo.SNIPPETFOLDER_FULLPATH +
+                " を確認してください."
+            )
             return
 
         snippetdict = _convert_to_snippetdict(file_content_list)
@@ -154,7 +156,6 @@ class SnippetLoader:
         self._notify_all(snippetdict)
 
     def _notify_all(self, data_for_notify):
-        # @todo shallow copy だから思わぬ弊害が出るかも, deep にしたい.
         self._snippet_subject.notify_all(
             data_for_notify
         )
