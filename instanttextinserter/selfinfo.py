@@ -4,7 +4,7 @@ import os
 import sys
 
 # Program Information
-PROGRAM_NAME = "instant text inserter"
+PROGRAM_NAME = "InstantTextInserter"
 VERSION = "0.0.1"
 AUTHOR = "shouh"
 PROGRAM_INFO = PROGRAM_NAME + " " + "v" + VERSION + " (c) " + AUTHOR
