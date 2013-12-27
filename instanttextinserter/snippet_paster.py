@@ -6,17 +6,21 @@ from time import sleep
 import util_win.clipboard as clipboard
 import util_win.keysimulator as keysimulator
 
+import macro
+
 class SnippetPaster:
     # マクロ解釈ルーチンが狂わないように
-    # '%' で囲んだ文字列にすること.
-    CURSOR_STRING = "%" + "cursor" + "%"
+    # '%' で囲んだ文字列にする,
+    CURSOR_STRING = macro.Macro.MARK + "cursor" + macro.Macro.MARK
 
     def __init__(self):
-        pass
+        self._macro = macro.Macro()
 
     def paste(self, abbr, phrase):
+        deployed_phrase = self._macro.deploy(phrase)
+
         clipboard.Clipboard.set(
-            self._get_phrase_for_copy(phrase)
+            self._get_phrase_for_copy(deployed_phrase)
         )
 
         ks = keysimulator.KeySimulator()
@@ -33,7 +37,7 @@ class SnippetPaster:
 
         # カーソル位置に戻るための文字数を計算して,
         # その分だけ Left key で移動する.
-        backcount = self.get_cursorbackcount(phrase)
+        backcount = self.get_cursorbackcount(deployed_phrase)
         for i in range(backcount):
             ks.left()
 
