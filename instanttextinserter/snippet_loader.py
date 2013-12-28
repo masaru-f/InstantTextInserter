@@ -89,7 +89,6 @@ def _convert_to_snippetdict(file_content_list):
     snippet_position_list.append(["dummy", len(file_content_list)])
 
     # スニペット位置リストからスニペット辞書を構築
-    # @todo ここに具体例を書く.
     dict_for_return = {}
     for i in range(len(snippet_position_list)):
         # ダミーは処理しない(out of rangeになる)

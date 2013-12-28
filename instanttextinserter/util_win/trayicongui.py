@@ -208,10 +208,6 @@ class MainWindow:
         if callable(self._callback_on_destroy):
             self._callback_on_destroy()
 
-        # postするタイミングを変えたのはここは不要なはず.
-        # @todo 不要そうなら消す.
-        #win32api.PostQuitMessage(0)
-
         try:
             self._trayicon.destroy()
             log.info("destroyed trayicon.")

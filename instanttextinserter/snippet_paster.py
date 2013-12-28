@@ -27,8 +27,7 @@ class SnippetPaster:
 
         # 短縮形入力分を BS で消去する.
         # 文字列の長さを正しく求めるため unicode string で計算する.
-        # @todo ここは unicode string にする必要無いかも.
-        #       abbr として ascii 文字しか許してないから.
+        # abbr として ascii しか許してないが, まあ念のため.
         abbrlength = len(abbr.decode())
         for i in range(abbrlength):
             ks.backspace()
@@ -50,13 +49,11 @@ class SnippetPaster:
 
     def get_cursorbackcount(self, container):
         """
-        cursor string 位置にキャレットを持ってくるために
+        cursor string 位置にカーソルを持ってくるために
         何文字分戻ればいいかを返す.
         戻る必要が無ければ 0.
 
         @param container cursorstring を含む文字列
-
-        @note キャレット? カーソル? カーソルが一般的なのでカーソルで.
         """
         # 文字数計算を正しく行うため unicode string で計算する.
         # 先頭の cursorstring の位置を求める.
