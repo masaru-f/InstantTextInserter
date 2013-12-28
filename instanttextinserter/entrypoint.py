@@ -7,8 +7,10 @@ import util.log as log
 
 import util_win.trayicongui as trayicongui
 
+import doublelaunch_checker
 import endhandler
 import menu
+import selfinfo
 import thread_trigger
 
 # デフォルトエンコーディングの設定
@@ -26,7 +28,9 @@ if hasattr(sys, 'setdefaultencoding'):
 class EntryPoint:
     def __init__(self):
         with terminator_stack.TerminatorStack() as termstack:
-            gui = trayicongui.MainWindow()
+            gui = trayicongui.MainWindow(
+                selfinfo.WINDOWCLASSNAME
+            )
             menuinst = menu.Menu()
             triggerwatcher = thread_trigger.TriggerThread()
             #hotkeywatcher = KeyWatcher()
@@ -45,11 +49,7 @@ class EntryPoint:
             gui.create_and_start()
 
 if __name__ == '__main__':
-    # 二重起動チェック
-    # 実行ファイルにすると何故か常に二重起動とみなされてしまうため
-    # コメントアウト中
-    #@todo 常に二重起動とみなされる原因を調査
-    #doublelaunch_checker.check_and_dispose()
+    doublelaunch_checker.check_and_dispose()
 
     log.info("start entrypoint.")
     entrypoint = EntryPoint()
