@@ -76,7 +76,6 @@ class TriggerThread(
 
         for i in range(keygetter.VK_MAX):
             if self._getter.is_pushed_once(i):
-                print i,
                 self._manager.input(i)
 
     def _term(self):
