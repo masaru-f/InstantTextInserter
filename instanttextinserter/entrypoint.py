@@ -37,8 +37,8 @@ class EntryPoint:
             #hotkeywatcher = KeyWatcher()
 
             gui.set_callback_on_right_click(menuinst.run)
-            # @note 即終了するのはとりあえず. リロードあたりに変えたいかな.
-            gui.set_callback_on_left_click(gui.destroy)
+            # @note リロードあたりに変えたいかな.
+            #gui.set_callback_on_left_click(gui.destroy)
 
             termstack.push(gui.destroy)
             endhandler.inst.set(gui.destroy)

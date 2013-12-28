@@ -115,10 +115,8 @@ accout.txt  : アカウント, ID関連
   ※大文字部分を記号に変換してください
 
 ウェブサイト
-  https://github.com/shouh/ffphrase/ (ソースコード)
+  https://github.com/shouh/InstantTextInserter (ソースコード)
 
 ■更新履歴
-あとで書く。
-
-13/??/?? v0.0.1
-・公開
+13/12/28 v0.0.1
+・とりあえず公開
