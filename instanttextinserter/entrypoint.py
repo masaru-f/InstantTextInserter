@@ -37,6 +37,7 @@ class EntryPoint:
             #hotkeywatcher = KeyWatcher()
 
             gui.set_callback_on_right_click(menuinst.run)
+            # @note ‘¦I—¹‚·‚é‚Ì‚Í‚Æ‚è‚ ‚¦‚¸. ƒŠƒ[ƒh‚ ‚½‚è‚É•Ï‚¦‚½‚¢‚©‚È.
             gui.set_callback_on_left_click(gui.destroy)
 
             termstack.push(gui.destroy)
