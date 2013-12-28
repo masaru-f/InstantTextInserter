@@ -9,8 +9,9 @@ VERSION = "0.0.1"
 AUTHOR = "shouh"
 PROGRAM_INFO = PROGRAM_NAME + " " + "v" + VERSION + " (c) " + AUTHOR
 
-# Program window information
+# GUI information
 WINDOWCLASSNAME = "itiwnd"
+TRAYICON_TOOLTIP = PROGRAM_NAME + " v" + VERSION
 
 # Program pathes
 PROGRAM_FULLPATH = sys.argv[0]

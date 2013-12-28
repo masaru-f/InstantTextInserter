@@ -85,7 +85,7 @@ class MainWindow:
     WM_BASE = win32con.WM_APP
     WM_TRAYICON_EVENT = WM_BASE + _incrementer()
 
-    def __init__(self, classname="window"):
+    def __init__(self, classname="window", tooltip=""):
         """
         @param classname ウィンドウクラス名
         """
@@ -97,6 +97,8 @@ class MainWindow:
         self._hinst = None
 
         self._trayicon = None
+        self._tooltip = tooltip
+
         self._mainloop = MainLoop()
 
         self._callback_on_destroy = None
@@ -176,11 +178,10 @@ class MainWindow:
         win32gui.ShowWindow(self._hwnd, win32con.SW_HIDE)
         log.debug("after showing window.")
 
-        # @todo ツールチップ変更
         self._trayicon = trayicon.TrayIcon(
             self._hwnd,
             MainWindow.WM_TRAYICON_EVENT,
-            "tooltiptext"
+            self._tooltip
         )
 
         self._mainloop.start() # blocking.
@@ -198,7 +199,6 @@ class MainWindow:
         ウィンドウを破棄する.
         @note ウィンドウを作成したスレッドと同じスレッドから呼び出すこと.
         """
-        #
         if not(self._can_destroy):
             return
         self._can_destroy = False

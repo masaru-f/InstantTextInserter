@@ -29,7 +29,8 @@ class EntryPoint:
     def __init__(self):
         with terminator_stack.TerminatorStack() as termstack:
             gui = trayicongui.MainWindow(
-                selfinfo.WINDOWCLASSNAME
+                selfinfo.WINDOWCLASSNAME,
+                selfinfo.TRAYICON_TOOLTIP
             )
             menuinst = menu.Menu()
             triggerwatcher = thread_trigger.TriggerThread()
