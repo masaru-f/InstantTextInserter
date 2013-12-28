@@ -31,8 +31,8 @@ class TriggerThread(
     """
 
     # スレッドループの待機時間.
-    # キー入力を余すことなく検出するためにも 0.01 くらいは欲しい.
-    INTERVAL_SEC = 0.01
+    # INTERVAL_SEC = 0.01 # cpu使用率 常時 2-3% 消費
+    INTERVAL_SEC = 0.03 # 1-2秒間隔 で 1-3% 消費
 
     def __init__(self):
         thread_interface.IWatcherThread.__init__(
