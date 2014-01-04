@@ -136,8 +136,7 @@ class SnippetLoader:
         """
         スニペットを再読込した後, observer 達に再読込したデータを通知する.
 
-        @note 今のところ呼び出し元は一箇所のつもりなので排他制御してない.
-        @todo 排他制御する.
+        @note 必要なら排他制御すること.
         """
         file_content_list = []
         try:

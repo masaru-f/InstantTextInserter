@@ -11,6 +11,7 @@ import doublelaunch_checker
 import endhandler
 import menu
 import selfinfo
+import snippet_loader
 import thread_trigger
 
 # デフォルトエンコーディングの設定
@@ -37,8 +38,7 @@ class EntryPoint:
             #hotkeywatcher = KeyWatcher()
 
             gui.set_callback_on_right_click(menuinst.run)
-            # @note リロードあたりに変えたいかな.
-            #gui.set_callback_on_left_click(gui.destroy)
+            gui.set_callback_on_left_click(snippet_loader.inst.reload)
 
             termstack.push(gui.destroy)
             endhandler.inst.set(gui.destroy)
