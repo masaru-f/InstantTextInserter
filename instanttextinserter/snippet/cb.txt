@@ -1,2 +1,0 @@
-==urla==
-<a href="%cb%">%cursor%</a>

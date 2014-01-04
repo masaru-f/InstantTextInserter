@@ -2,8 +2,6 @@
 
 import os
 
-import util_win.clipboard as clipboard
-
 class SystemMacro:
     """
     システムマクロ.
@@ -14,8 +12,6 @@ class SystemMacro:
         self._dict = {
             "equal"     :"=",
             "="         :"=",
-            "cb"        :self._get_clipboard,
-            "clipboard" :self._get_clipboard
         }
 
     def get(self, key):
@@ -35,9 +31,6 @@ class SystemMacro:
                 pass
             return ret
         return value
-
-    def _get_clipboard(self):
-        return clipboard.Clipboard.get()
 
 class Macro:
     """

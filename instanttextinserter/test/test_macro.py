@@ -36,11 +36,6 @@ class MacroTest(unittest.TestCase):
             print str(i) + "'s deployment test"
             self.assertEqual(expect, actual)
 
-        # 呼び出すだけで値の検証はしていない.
-        print "==== system macro / clipboard ===="
-        print sm.get("cb")[:128] # 長い時があるので全部は表示しない
-        print sm.get("clipboard")[:128]
-
     def testMacro(self):
         m = macro.Macro()
 
