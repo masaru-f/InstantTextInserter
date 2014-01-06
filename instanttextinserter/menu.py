@@ -29,7 +29,7 @@ class Menu:
         )
         #creator.append("Open snippet [hoge]", "currentsnippet")
         creator.append_separator()
-        creator.append("Open IntallDir", commander_system.CMD_OPEN_DIRECTORY)
+        creator.append("Open InstallDir", commander_system.CMD_OPEN_DIRECTORY)
         creator.append("Version", commander_system.CMD_SHOW_VERSION)
         creator.append("Quit", commander_system.CMD_QUIT)
 
