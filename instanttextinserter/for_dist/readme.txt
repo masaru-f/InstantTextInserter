@@ -118,5 +118,5 @@ accout.txt  : アカウント, ID関連
   https://github.com/shouh/InstantTextInserter (ソースコード)
 
 ■更新履歴
-13/12/28 v0.0.1
+13/01/06 v0.0.1
 ・とりあえず公開
