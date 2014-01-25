@@ -191,7 +191,13 @@ class MainWindow:
             1234, # Ž¯•ÊŽq. ’l‚Í‚Æ‚è‚ ‚¦‚¸“K“–.
             win32con.MOD_CONTROL | win32con.MOD_SHIFT,
             76 # L
+            #Šù‚ÉŠ„‚è“–‚Ä‚ç‚ê‚½•ª‚ð“–‚Ä‚Ä‚Ý‚é. -> Ž¸”s. getlasterror‚Í0
+            #win32con.MOD_CONTROL | win32con.MOD_ALT,
+            #82 # R
         )
+        if not(canHotkey):
+            print "RegisterHotkey failed."
+            print "GetLastError:" + str(win32api.GetLastError())
 
         self._mainloop.start() # blocking.
 
