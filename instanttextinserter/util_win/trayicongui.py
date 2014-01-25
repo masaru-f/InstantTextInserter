@@ -191,12 +191,18 @@ class MainWindow:
             1234, # 識別子. 値はとりあえず適当.
             win32con.MOD_CONTROL | win32con.MOD_SHIFT,
             76 # L
-            #既に割り当てられた分を当ててみる. -> 失敗. getlasterrorは0
-            #win32con.MOD_CONTROL | win32con.MOD_ALT,
-            #82 # R
         )
         if not(canHotkey):
-            print "RegisterHotkey failed."
+            print "RegisterHotkey1 failed."
+            print "GetLastError:" + str(win32api.GetLastError())
+        canHotkey = ctypes.windll.user32.RegisterHotKey(
+            self._hwnd,
+            1234+1,
+            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
+            82 # R
+        )
+        if not(canHotkey):
+            print "RegisterHotkey2 failed."
             print "GetLastError:" + str(win32api.GetLastError())
 
         self._mainloop.start() # blocking.
@@ -226,10 +232,19 @@ class MainWindow:
         try:
             couldUnregister = ctypes.windll.user32.UnregisterHotKey(
                 self._hwnd,
-                1234, # 識別子. 値はとりあえず適当.
+                1234,
             )
             if not(couldUnregister):
-                print "unregister hotkey failed..."
+                print "unregister hotkey1 failed..."
+        except:
+            pass
+        try:
+            couldUnregister = ctypes.windll.user32.UnregisterHotKey(
+                self._hwnd,
+                1234+1,
+            )
+            if not(couldUnregister):
+                print "unregister hotkey2 failed..."
         except:
             pass
 
@@ -261,6 +276,9 @@ class MainWindow:
             )
 
     def _on_hotkey(self, hwnd, message, wparam, lparam):
+        print "---- hotkey info ----"
+        print "wparam:" + str(wparam) # register時のid
+        print "lparam:" + str(lparam) # 下wordはmodifier, 上wordはkeycode
         if callable(self._callback_on_right_click):
             self._callback_on_right_click()
 
