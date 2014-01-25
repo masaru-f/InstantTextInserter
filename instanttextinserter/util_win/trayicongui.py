@@ -1,5 +1,6 @@
 # encoding: shift-jis
 
+import ctypes
 import win32gui
 import win32con
 import win32api
@@ -109,6 +110,7 @@ class MainWindow:
         self._message_map = {
             win32con.WM_DESTROY          : self._on_destroy,
             MainWindow.WM_TRAYICON_EVENT : self._on_tray,
+            win32con.WM_HOTKEY           : self._on_hotkey,
         }
 
     def __enter__(self):
@@ -184,6 +186,13 @@ class MainWindow:
             self._tooltip
         )
 
+        canHotkey = ctypes.windll.user32.RegisterHotKey(
+            self._hwnd,
+            1234, # 識別子. 値はとりあえず適当.
+            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
+            76 # L
+        )
+
         self._mainloop.start() # blocking.
 
     def stop(self):
@@ -207,6 +216,16 @@ class MainWindow:
 
         if callable(self._callback_on_destroy):
             self._callback_on_destroy()
+
+        try:
+            couldUnregister = ctypes.windll.user32.UnregisterHotKey(
+                self._hwnd,
+                1234, # 識別子. 値はとりあえず適当.
+            )
+            if not(couldUnregister):
+                print "unregister hotkey failed..."
+        except:
+            pass
 
         try:
             self._trayicon.destroy()
@@ -234,6 +253,10 @@ class MainWindow:
                 "unregistered class failed." +
                 str(type(e)) + "/" + str(e)
             )
+
+    def _on_hotkey(self, hwnd, message, wparam, lparam):
+        if callable(self._callback_on_right_click):
+            self._callback_on_right_click()
 
     def _on_destroy(self, hwnd, message, wparam, lparam):
         self.destroy()
