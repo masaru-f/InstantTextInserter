@@ -1,6 +1,6 @@
 # encoding: shift-jis
 
-import ctypes
+#import ctypes # for hotkey prototype
 import win32gui
 import win32con
 import win32api
@@ -103,6 +103,7 @@ class MainWindow:
         self._mainloop = MainLoop()
 
         self._callback_on_destroy = None
+        self._callback_on_hotkey = None
         self._callback_on_left_click = None
         self._callback_on_right_click = None
         self._callback_on_middle_click = None
@@ -124,6 +125,9 @@ class MainWindow:
         ウィンドウ破棄時に実行するコールバック関数を登録する.
         """
         self._callback_on_destroy = callback
+
+    def set_callback_on_hotkey(self, callback):
+        self._callback_on_hotkey = callback
 
     def set_callback_on_left_click(self, callback):
         self._callback_on_left_click = callback
@@ -186,6 +190,7 @@ class MainWindow:
             self._tooltip
         )
 
+        '''
         canHotkey = ctypes.windll.user32.RegisterHotKey(
             self._hwnd,
             1234, # 識別子. 値はとりあえず適当.
@@ -204,6 +209,7 @@ class MainWindow:
         if not(canHotkey):
             print "RegisterHotkey2 failed."
             print "GetLastError:" + str(win32api.GetLastError())
+        '''
 
         self._mainloop.start() # blocking.
 
@@ -217,7 +223,7 @@ class MainWindow:
 
     def destroy(self):
         """
-        ウィンドウを破棄する.
+        GUIの破棄と, 破棄時コールバックの実行.
         @note ウィンドウを作成したスレッドと同じスレッドから呼び出すこと.
         """
         if not(self._can_destroy):
@@ -229,6 +235,7 @@ class MainWindow:
         if callable(self._callback_on_destroy):
             self._callback_on_destroy()
 
+        '''
         try:
             couldUnregister = ctypes.windll.user32.UnregisterHotKey(
                 self._hwnd,
@@ -247,6 +254,7 @@ class MainWindow:
                 print "unregister hotkey2 failed..."
         except:
             pass
+        '''
 
         try:
             self._trayicon.destroy()
@@ -276,11 +284,8 @@ class MainWindow:
             )
 
     def _on_hotkey(self, hwnd, message, wparam, lparam):
-        print "---- hotkey info ----"
-        print "wparam:" + str(wparam) # register時のid
-        print "lparam:" + str(lparam) # 下wordはmodifier, 上wordはkeycode
-        if callable(self._callback_on_right_click):
-            self._callback_on_right_click()
+        if callable(self._callback_on_hotkey):
+            self._callback_on_hotkey()
 
     def _on_destroy(self, hwnd, message, wparam, lparam):
         self.destroy()
