@@ -14,6 +14,8 @@ import selfinfo
 import snippet_loader
 import thread_trigger
 
+import hotkey_loader
+
 # デフォルトエンコーディングの設定
 # 通常 sys.setdefaultencoding は存在しない(sitecustomizeで設定する)が,
 # py2exe で生成した実行ファイル経由だと
@@ -33,22 +35,28 @@ class EntryPoint:
                 selfinfo.WINDOWCLASSNAME,
                 selfinfo.TRAYICON_TOOLTIP
             )
+            gui.create()
+
             menuinst = menu.Menu()
             triggerwatcher = thread_trigger.TriggerThread()
-            #hotkeywatcher = KeyWatcher()
+            hotkeyloaderinst = hotkey_loader.HotkeyLoader(
+                trayicongui.hwndinst.get()
+            )
 
             gui.set_callback_on_right_click(menuinst.run)
             gui.set_callback_on_left_click(snippet_loader.inst.reload)
+            gui.set_callback_on_hotkey(hotkeyloaderinst.get_hotkey_callback())
 
             termstack.push(gui.destroy)
             endhandler.inst.set(gui.destroy)
 
             termstack.push(triggerwatcher.stop)
             triggerwatcher.start()
-            #termstack.push(hotkeywatcher.stop)
-            #hotkeywatcher.start()
 
-            gui.create_and_start()
+            termstack.push(hotkeyloaderinst.unregister_hotkey)
+            hotkeyloaderinst.register_hotkey()
+
+            gui.start()
 
 if __name__ == '__main__':
     doublelaunch_checker.check_and_dispose()

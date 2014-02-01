@@ -138,9 +138,9 @@ class MainWindow:
     def set_callback_on_middle_click(self, callback):
         self._callback_on_middle_click = callback
 
-    def create_and_start(self):
+    def create(self):
         """
-        ウィンドウを作成した後 GUI ループに入る.
+        ウィンドウを作成する.
         """
         if self._hwnd:
             return self._hwnd
@@ -210,6 +210,16 @@ class MainWindow:
             print "RegisterHotkey2 failed."
             print "GetLastError:" + str(win32api.GetLastError())
         '''
+
+    def start(self):
+        """
+        GUIループに入る.
+        create() と分けているのは, create() 後に
+        呼び出し元でウィンドウハンドルが欲しいケースに対応するため.
+        """
+        if not(self._hwnd):
+            log.debug("cannot start. main window is not created.")
+            return
 
         self._mainloop.start() # blocking.
 
@@ -285,7 +295,9 @@ class MainWindow:
 
     def _on_hotkey(self, hwnd, message, wparam, lparam):
         if callable(self._callback_on_hotkey):
-            self._callback_on_hotkey()
+            # @todo 引数を適当に間引く. index, modifier, keycode くらい.
+            print "from trayicongui, " + str(self)
+            self._callback_on_hotkey(hwnd, message, wparam, lparam)
 
     def _on_destroy(self, hwnd, message, wparam, lparam):
         self.destroy()
