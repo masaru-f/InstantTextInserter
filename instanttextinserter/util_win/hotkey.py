@@ -105,7 +105,7 @@ class HotkeyManager:
         hotkey_config.set_callback(callback)
 
     def unregister_all(self):
-        hotkey_config_list = self._map.keys()
+        hotkey_config_list = self._map.values()
         for hotkey_config in hotkey_config_list:
             hotkey_config.unregister_hotkey()
 
@@ -121,7 +121,7 @@ class HotkeyManager:
         pushee_modifier = win32api.LOWORD(lparam)
         pushee_key = win32api.HIWORD(lparam)
 
-        hotkey_config_list = self._map.keys()
+        hotkey_config_list = self._map.values()
 
         for hotkey_config in hotkey_config_list:
             index = hotkey_config.get_index()
@@ -131,10 +131,7 @@ class HotkeyManager:
             callback = hotkey_config.get_callback()
             if not(callable(callback)):
                 # 正しいコールバック関数が入ってないとここに来る.
-                # これはプログラマ側のエラー.
-                # @todo プログラムエラーであることがわかるようにしたい.
-                # @todo コールバック関数の正しさはどこで検証する? \n
-                #       ここ or セットするところ のいずれかだろう.
+                # これはプログラマのミス.
                 raise RuntimeError(
                     "Callback function is not callable./" +
                     "type of callback object:" + type(callback) + "/" +
