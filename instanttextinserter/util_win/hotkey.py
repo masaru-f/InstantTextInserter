@@ -24,7 +24,7 @@ class HotkeyConfig:
 
         @param modifier win32con の MOD_HOGE の組み合わせ
         @param key 仮想キーコード
-        @retval false 登録に失敗
+        @retval False 登録に失敗
         """
         is_hotkey_valid = ctypes.windll.user32.RegisterHotKey(
             self._hwnd,
@@ -60,24 +60,6 @@ class HotkeyConfig:
             # エラーは無視する.
             pass
 
-"""
-hotkeymanager in util.win
-- map
-- hwnd
-- maxindex
- - 初期値1. 一つ hotkeyconfig を作るたびにインクリメント.
-- ctor(hwnd)
- - map["reload"] = new HotkeyConfig(hwnd, 1)
- - map["open_snippet_folder"] = new HotkeyConfig(hwnd, 2)
- - …
-- register_hotkey(name, modifier, key)
- - map[name] が無ければ新規, あればそれを使う.
-- register_callback(name, callback)
-- unregister_all()
-- on_hotkey(hwnd, message, wparam, lparam)
- - @note も少し間引いてもいいかも on_hotkey(index, modifier, key)
- - index に該当する callback を探し, それを実行
-"""
 class HotkeyManager:
     """
     複数のホットキー設定を管理.
@@ -111,6 +93,7 @@ class HotkeyManager:
             return False
 
         self._map[name] = hotkey_config
+        return True
 
     def register_callback(self, name, callback):
         hotkey_config = None
@@ -152,7 +135,11 @@ class HotkeyManager:
                 # @todo プログラムエラーであることがわかるようにしたい.
                 # @todo コールバック関数の正しさはどこで検証する? \n
                 #       ここ or セットするところ のいずれかだろう.
-                return
+                raise RuntimeError(
+                    "Callback function is not callable./" +
+                    "type of callback object:" + type(callback) + "/" +
+                    "pushee_index:" + pushee_index
+                )
 
             callback()
 
