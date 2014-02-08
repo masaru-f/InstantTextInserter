@@ -190,27 +190,6 @@ class MainWindow:
             self._tooltip
         )
 
-        '''
-        canHotkey = ctypes.windll.user32.RegisterHotKey(
-            self._hwnd,
-            1234, # 識別子. 値はとりあえず適当.
-            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
-            76 # L
-        )
-        if not(canHotkey):
-            print "RegisterHotkey1 failed."
-            print "GetLastError:" + str(win32api.GetLastError())
-        canHotkey = ctypes.windll.user32.RegisterHotKey(
-            self._hwnd,
-            1234+1,
-            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
-            82 # R
-        )
-        if not(canHotkey):
-            print "RegisterHotkey2 failed."
-            print "GetLastError:" + str(win32api.GetLastError())
-        '''
-
     def start(self):
         """
         GUIループに入る.
@@ -244,27 +223,6 @@ class MainWindow:
 
         if callable(self._callback_on_destroy):
             self._callback_on_destroy()
-
-        '''
-        try:
-            couldUnregister = ctypes.windll.user32.UnregisterHotKey(
-                self._hwnd,
-                1234,
-            )
-            if not(couldUnregister):
-                print "unregister hotkey1 failed..."
-        except:
-            pass
-        try:
-            couldUnregister = ctypes.windll.user32.UnregisterHotKey(
-                self._hwnd,
-                1234+1,
-            )
-            if not(couldUnregister):
-                print "unregister hotkey2 failed..."
-        except:
-            pass
-        '''
 
         try:
             self._trayicon.destroy()
