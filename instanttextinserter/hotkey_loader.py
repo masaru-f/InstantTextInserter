@@ -22,29 +22,55 @@ class IniLoader:
     def read_all():
         return
 
+
+"""
+試行用.
+"""
+def func1():
+    print "func1!"
+def func2():
+    print "func2! func2!!"
+
+"""
+今はホットキーモジュールを動かすための試行ソース.
+したがってごちゃごちゃしてるよ.
+"""
 class HotkeyLoader:
     def __init__(self, hwnd):
         self._hwnd = hwnd
-        self._hotkey_config = hotkey.HotkeyConfig(hwnd, 1234) # 値は適当.
+        self._hotkey_manager = hotkey.HotkeyManager(hwnd)
 
     def register_hotkey(self):
-        is_valid_hotkey = self._hotkey_config.register_hotkey(
+        name1 = "test-L"
+        is_valid_hotkey = self._hotkey_manager.register_hotkey(
+            name1,
             win32con.MOD_CONTROL | win32con.MOD_SHIFT,
             76 # L
         )
         if not(is_valid_hotkey):
-            print "RegisterHotkey1 failed."
+            print name1 + " failed."
             print "GetLastError:" + str(win32api.GetLastError())
+            return
+        self._hotkey_manager.register_callback(name1, func1)
+
+        name2 = "test-M"
+        is_valid_hotkey = self._hotkey_manager.register_hotkey(
+            name2,
+            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
+            77 # M
+        )
+        if not(is_valid_hotkey):
+            print name2 + " failed."
+            print "GetLastError:" + str(win32api.GetLastError())
+            return
+        self._hotkey_manager.register_callback(name2, func2)
 
     def unregister_hotkey(self):
-        self._hotkey_config.unregister_hotkey()
+        print "START UnregisterHotkey"
+        self._hotkey_manager.unregister_all()
 
     def on_hotkey(self, hwnd, message, wparam, lparam):
-        print "from hotkeyloader, " + str(self)
-        print "hwnd:" + str(hwnd)
-        print "message:" + str(message)
-        print "wparam:" + str(wparam)
-        print "lparam:" + str(lparam)
+        self._hotkey_manager.on_hotkey(hwnd, message, wparam, lparam)
 
     def get_hotkey_callback(self):
         return self.on_hotkey
