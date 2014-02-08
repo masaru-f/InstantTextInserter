@@ -35,10 +35,10 @@ class HotkeyConfig:
     def register_hotkey(self, modifier, key):
         """
         新しいホットキー登録を行うと, 以前登録分は上書きされる.
-        これは RegisterHotKey の仕様で, index を固定しているため.
 
         @param modifier win32con の MOD_HOGE の組み合わせ
         @param key 仮想キーコード
+        @retval false 登録に失敗
         """
         is_hotkey_valid = ctypes.windll.user32.RegisterHotKey(
             self._hwnd,
@@ -47,11 +47,14 @@ class HotkeyConfig:
             key
         )
         if not(is_hotkey_valid):
-            # @todo 戻り値設計 win32api.GetLastError() を使うか?
-            return
+            # とりあえずエラー詳細(win32api.GetLastError())は見ない.
+            # 必要そうならまた対応する.
+            return False
         # ホットキー登録成功後に更新する.
         self._modifier = modifier
         self._key = key
+
+        return True
 
     def set_callback(self, callback):
         self._callback = callback
@@ -65,8 +68,8 @@ class HotkeyConfig:
             self._index
         )
         if not(could_unregister):
-            # @todo 戻り値設計 win32api.GetLastError() を使うか?
-            return
+            # エラーは無視する.
+            pass
 
 """
 hotkeymanager in util.win
@@ -91,3 +94,4 @@ class IniLoader:
         return
 
 if __name__ == '__main__':
+    pass

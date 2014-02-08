@@ -3,32 +3,41 @@
 import ctypes # for hotkey prototype
 import win32con
 
+import util_win.hotkey as hotkey
+
+"""
+- content
+- name, modifier, key に変換して返す
+ - as > MOD_ALT & MOD_SHIFT への変換
+ - z > 仮想キーコード への変換
+- read_all
+ - iniファイルを読み込む
+ - 読み込んだ内容を name, modifier, key に変換
+ - 変換した奴等を何らかの形式で返却
+"""
+class IniLoader:
+    def __init__(self):
+        self._content = None
+
+    def read_all():
+        return
+
 class HotkeyLoader:
     def __init__(self, hwnd):
         self._hwnd = hwnd
-        return
+        self._hotkey_config = hotkey.HotkeyConfig(hwnd, 1234) # 値は適当.
 
     def register_hotkey(self):
-        canHotkey = ctypes.windll.user32.RegisterHotKey(
-            self._hwnd,
-            1234, # 識別子. 値はとりあえず適当.
+        is_valid_hotkey = self._hotkey_config.register_hotkey(
             win32con.MOD_CONTROL | win32con.MOD_SHIFT,
             76 # L
         )
-        if not(canHotkey):
+        if not(is_valid_hotkey):
             print "RegisterHotkey1 failed."
             print "GetLastError:" + str(win32api.GetLastError())
 
     def unregister_hotkey(self):
-        try:
-            couldUnregister = ctypes.windll.user32.UnregisterHotKey(
-                self._hwnd,
-                1234,
-            )
-            if not(couldUnregister):
-                print "unregister hotkey1 failed..."
-        except:
-            pass
+        self._hotkey_config.unregister_hotkey()
 
     def on_hotkey(self, hwnd, message, wparam, lparam):
         print "from hotkeyloader, " + str(self)
