@@ -4,6 +4,10 @@ import ctypes # for hotkey prototype
 import win32con
 
 import util_win.hotkey as hotkey
+import util_win.keycode as keycode
+
+import selfinfo
+import util.filereader as filereader
 
 """
 - content
@@ -15,12 +19,66 @@ import util_win.hotkey as hotkey
  - 読み込んだ内容を name, modifier, key に変換
  - 変換した奴等を何らかの形式で返却
 """
+
+class HotkeyEntry:
+    """
+    設定ファイルから読み込んだ, ホットキー設定一つ分.
+    """
+    SEPARATOR = ","
+    def __init__(self, line):
+        # "a , b , c  " → [a,b,c] に.
+        # リスト化と各要素の空白除去.
+        ls = line.split(HotkeyEntry.SEPARATOR)
+        ls = [elm.strip() for elm in ls]
+
+        try:
+            self._name = ls[0]
+            self._modifier = self._to_interger_modifier(ls[1])
+            self._keycode = self._to_interger_keycode(ls[2])
+        except IndexError:
+            raise
+
+        return
+
+    def _to_interger_modifier(self, modifier_string):
+        """
+        'as' から MOD_ALT|MOD_SHIFT を返す, ようなやつ.
+        @retval 0 指定文字列が不正
+        """
+        query = modifier_string.lower()
+        ret = 0
+        if query.find("a") != -1:
+            ret |= win32con.MOD_ALT
+        if query.find("c") != -1:
+            ret |= win32con.MOD_CONTROL
+        if query.find("s") != -1:
+            ret |= win32con.MOD_SHIFT
+        if query.find("w") != -1:
+            ret |= win32con.MOD_WIN
+        return ret
+
+    def _to_interger_keycode(self, key_string):
+        """
+        'a' から 65 を返す, ようなやつ.
+        @retval 0 指定文字列が不正
+        """
+        ret = keycode.str2keycode(key_string.lower())
+
+        if ret==keycode.INVALID:
+            ret = 0
+
+        return ret
+
 class IniLoader:
     def __init__(self):
         self._content = None
 
-    def read_all():
-        return
+    def read_all(self):
+        """
+        @exception IOError ファイルが開けない
+        """
+        reader = filereader.FileReader()
+        self._content = reader.read()
 
 
 """

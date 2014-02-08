@@ -21,3 +21,4 @@ PROGRAM_DIRECTORY = os.path.dirname(PROGRAM_FULLPATH)
 # ‚±‚±‚É’u‚­‚×‚«‚©‚Ç‚¤‚©–À‚Á‚½‚¯‚Ç
 # ˆêŒ³ŠÇ—‚Å‚«‚é‚Ì‚Å‚Æ‚è‚ ‚¦‚¸‚±‚±‚Å...
 SNIPPETFOLDER_FULLPATH = os.path.join(PROGRAM_DIRECTORY, "snippet")
+HOTKEYCONFIG_FULLPATH = os.path.join(PROGRAM_DIRECTORY, "hotkey.ini")

@@ -141,8 +141,11 @@ N9 = 105
 
 VK_MAX = 256 # キーコード数
 
-# 文字列からキーコードに変換する
-def chara2keycode(chara):
+"""
+文字列からキーコードに変換する.
+@retval INVALID 対応するキーコードが見つからなかった
+"""
+def str2keycode(keycode_string):
     d = {
         "a":A,
         "b":B,
@@ -251,7 +254,7 @@ def chara2keycode(chara):
     }
     ret = INVALID
     try:
-        ret = d[chara.lower()]
+        ret = d[keycode_string.lower()]
     except KeyError:
         pass
     return ret
