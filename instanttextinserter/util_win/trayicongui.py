@@ -303,7 +303,8 @@ if __name__ == '__main__':
         )
         stopthread.start()
 
-        mainwindow.create_and_start()
+        mainwindow.create()
+        mainwindow.stop()
 
         stopthread.join()
 
