@@ -97,6 +97,49 @@ class HotkeyEntryTest(unittest.TestCase):
         except RuntimeError:
             pass
 
+    def test_IniLoader(self):
+        """
+        マジックナンバーは,
+        テスト用設定ファイルの内容を決め打ちしている分.
+        """
+        loader = hotkey_loader.IniLoader()
+        content = loader.read_all()
+
+        def assert_entry(hotkey_entry, exp_name, exp_mod, exp_key):
+            self.assertEqual(hotkey_entry._name, exp_name)
+            self.assertEqual(hotkey_entry._modifier, exp_mod)
+            self.assertEqual(hotkey_entry._keycode, exp_key)
+
+        # 設定件数の確認
+        self.assertEqual(5, len(content))
+
+        # 各設定の中身を確認,
+        assert_entry(
+            content[0],
+            "correct_1_modifier",win32con.MOD_SHIFT,keycode.A
+        )
+        assert_entry(
+            content[1],
+            "correct_2_modifier",
+            win32con.MOD_CONTROL|win32con.MOD_ALT,
+            keycode.A
+        )
+        assert_entry(
+            content[2],
+            "correct_3_modifier",
+            win32con.MOD_WIN|win32con.MOD_SHIFT|win32con.MOD_CONTROL,
+            keycode.A
+        )
+        assert_entry(
+            content[3],
+            "correct_4_modifier",
+            win32con.MOD_ALT|win32con.MOD_WIN| \
+            win32con.MOD_SHIFT|win32con.MOD_CONTROL,
+            keycode.A
+        )
+        assert_entry(
+            content[4], "correct_many_spaces",win32con.MOD_ALT,keycode.A
+        )
 
 if __name__ == "__main__":
     unittest.main()

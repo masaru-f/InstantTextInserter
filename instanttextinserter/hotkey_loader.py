@@ -1,6 +1,8 @@
 # encoding: shift-jis
 
+import copy
 import ctypes # for hotkey prototype
+import os
 import win32con
 
 import util_win.hotkey as hotkey
@@ -8,17 +10,6 @@ import util_win.keycode as keycode
 
 import selfinfo
 import util.filereader as filereader
-
-"""
-- content
-- name, modifier, key に変換して返す
- - as > MOD_ALT & MOD_SHIFT への変換
- - z > 仮想キーコード への変換
-- read_all
- - iniファイルを読み込む
- - 読み込んだ内容を name, modifier, key に変換
- - 変換した奴等を何らかの形式で返却
-"""
 
 class HotkeyEntry:
     """
@@ -87,8 +78,29 @@ class IniLoader:
         @exception IOError ファイルが開けない
         """
         reader = filereader.FileReader()
-        self._content = reader.read()
 
+        try:
+            self._content = reader.read(selfinfo.HOTKEYCONFIG_FULLPATH)
+        except IOError:
+            raise
+
+        # 末尾の改行を取り除く.
+        # @todo util 側を修正したいが影響範囲がでかい. 要精査.
+        for i in range(len(self._content)):
+            self._content[i] = self._content[i].strip(os.linesep)
+
+        # 書式が有効な設定のみ抽出
+        ret_list = []
+        for line in self._content:
+            hotkey_entry = None
+            try:
+                hotkey_entry = HotkeyEntry(line)
+            except RuntimeError:
+                # 書式が不正な分は無視.
+                continue
+            ret_list.append(copy.deepcopy(hotkey_entry))
+
+        return ret_list
 
 """
 試行用.
