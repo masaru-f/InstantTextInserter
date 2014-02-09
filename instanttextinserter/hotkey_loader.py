@@ -26,8 +26,10 @@ class HotkeyEntry:
     """
     SEPARATOR = ","
     def __init__(self, line):
-        # "a , b , c  " → [a,b,c] に.
-        # リスト化と各要素の空白除去.
+        """
+        @param line "(name),(modifier),(key)" なる文字列
+        @exception RuntimeError 入力文字列の形式が不正
+        """
         ls = line.split(HotkeyEntry.SEPARATOR)
         ls = [elm.strip() for elm in ls]
 
@@ -36,9 +38,16 @@ class HotkeyEntry:
             self._modifier = self._to_interger_modifier(ls[1])
             self._keycode = self._to_interger_keycode(ls[2])
         except IndexError:
-            raise
+            raise RuntimeError("list out of index.")
 
-        return
+        if len(self._name)==0:
+            raise RuntimeError("name is empty.")
+
+        if self._modifier == 0:
+            raise RuntimeError("modifier is invalid.")
+
+        if self._keycode == 0:
+            raise RuntimeError("keycode is invalid.")
 
     def _to_interger_modifier(self, modifier_string):
         """

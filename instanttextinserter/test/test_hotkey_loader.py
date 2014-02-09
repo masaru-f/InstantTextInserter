@@ -28,7 +28,7 @@ class HotkeyEntryTest(unittest.TestCase):
         """
         testname = "hoge"
 
-        # 各修飾キーが正しく変換できる
+        # 各修飾キーを正しく変換できる
         self.assertEntry(
             testname + "," + "a, k",
             testname, win32con.MOD_ALT, keycode.K
@@ -46,7 +46,7 @@ class HotkeyEntryTest(unittest.TestCase):
             testname, win32con.MOD_WIN, keycode.ESC
         )
 
-        # 修飾キーの組み合わせが正しく変換できる
+        # 修飾キーの組み合わせを正しく変換できる
         # ついでに, 大文字小文字問わないことと, 空白有っても良いことも確認.
         self.assertEntry(
             testname + "," + "cs, k", testname,
@@ -66,8 +66,37 @@ class HotkeyEntryTest(unittest.TestCase):
         )
 
         # 異常系
-        # @todo どういう場合に許さない, とするのか考えてから TDD しようか.
-        # 例)名前が空はダメ, modifier無しはダメ, key無しはダメ, etc...
+        try:
+            # 修飾キーの指定が無いとエラー
+            hotkey_loader.HotkeyEntry("name")
+            self.assertTrue(False)
+        except RuntimeError:
+            pass
+        try:
+            # 文字キーの指定が無いとエラー
+            hotkey_loader.HotkeyEntry("name,as")
+            self.assertTrue(False)
+        except RuntimeError:
+            pass
+        try:
+            # 空文字列を与えるとエラー
+            hotkey_loader.HotkeyEntry("")
+            self.assertTrue(False)
+        except RuntimeError:
+            pass
+        try:
+            # 修飾キーが無効だとエラー
+            hotkey_loader.HotkeyEntry("name,qqq,k")
+            self.assertTrue(False)
+        except RuntimeError:
+            pass
+        try:
+            # 文字キーが無効だとエラー
+            hotkey_loader.HotkeyEntry("name,sc,invalidname")
+            self.assertTrue(False)
+        except RuntimeError:
+            pass
+
 
 if __name__ == "__main__":
     unittest.main()
