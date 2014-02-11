@@ -3,13 +3,17 @@
 import copy
 import ctypes # for hotkey prototype
 import os
+
+import win32api
 import win32con
+
+import util.filereader as filereader
 
 import util_win.hotkey as hotkey
 import util_win.keycode as keycode
 
+import dialog_wrapper
 import selfinfo
-import util.filereader as filereader
 
 class HotkeyEntry:
     """
@@ -39,6 +43,15 @@ class HotkeyEntry:
 
         if self._keycode == 0:
             raise RuntimeError("keycode is invalid.")
+
+    def get_name(self):
+        return self._name
+
+    def get_modifier(self):
+        return self._modifier
+
+    def get_keycode(self):
+        return self._keycode
 
     def _to_interger_modifier(self, modifier_string):
         """
@@ -70,6 +83,9 @@ class HotkeyEntry:
         return ret
 
 class IniLoader:
+    """
+    ホットキー用設定ファイルを読み込む.
+    """
     def __init__(self):
         self._content = None
 
@@ -82,7 +98,7 @@ class IniLoader:
         try:
             self._content = reader.read(selfinfo.HOTKEYCONFIG_FULLPATH)
         except IOError:
-            raise
+            raise IOError("Cannot read " + selfinfo.HOTKEYCONFIG_FULLPATH)
 
         # 末尾の改行を取り除く.
         # @todo util 側を修正したいが影響範囲がでかい. 要精査.
@@ -102,57 +118,70 @@ class IniLoader:
 
         return ret_list
 
-"""
-試行用.
-"""
-def func1():
-    print "func1!"
-def func2():
-    print "func2! func2!!"
-
-"""
-今はホットキーモジュールを動かすための試行ソース.
-したがってごちゃごちゃしてるよ.
-"""
 class HotkeyLoader:
+    """
+    ホットキーの登録を行う.
+    設定ファイル読み込みから実際の登録までの一連の処理を担当.
+
+    用意する操作は以下の二つだけ.
+    - 設定ファイルから全設定を読み込んで登録する
+    - 登録されている設定全てをクリアする
+    """
     def __init__(self, hwnd):
         self._hwnd = hwnd
         self._hotkey_manager = hotkey.HotkeyManager(hwnd)
+        self._iniloader= IniLoader()
 
-    def register_hotkey(self):
-        name1 = "test-L"
-        is_valid_hotkey = self._hotkey_manager.register_hotkey(
-            name1,
-            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
-            76 # L
-        )
-        if not(is_valid_hotkey):
-            print name1 + " failed."
-            print "GetLastError:" + str(win32api.GetLastError())
+    def load_and_register_hotkeys(self):
+        hotkey_entries = None
+        try:
+            hotkey_entries = self._iniloader.read_all()
+        except IOError as e:
+            dialog_wrapper.ok("設定ファイルの読込に失敗./" + str(e))
             return
-        self._hotkey_manager.register_callback(name1, func1)
 
-        name2 = "test-M"
-        is_valid_hotkey = self._hotkey_manager.register_hotkey(
-            name2,
-            win32con.MOD_CONTROL | win32con.MOD_SHIFT,
-            77 # M
-        )
-        if not(is_valid_hotkey):
-            print name2 + " failed."
-            print "GetLastError:" + str(win32api.GetLastError())
+        if not(hotkey_entries):
             return
-        self._hotkey_manager.register_callback(name2, func2)
 
-    def unregister_hotkey(self):
-        print "START UnregisterHotkey"
+        import hotkey_callback_map
+        for hotkey_entry in hotkey_entries:
+            name = hotkey_entry.get_name()
+            modifier = hotkey_entry.get_modifier()
+            keycode = hotkey_entry.get_keycode()
+
+            # 対応する name のコールバック関数が無ければ無効.
+            # つまり callback_map に登録した name のみが有効.
+            callback = None
+            try:
+                callback = hotkey_callback_map.callback_map[name]
+            except KeyError:
+                print name # @note デバッグ用途なので用が済んだら消す.
+                continue
+
+            is_valid_hotkey = self._hotkey_manager.register_hotkey(
+                name, modifier, keycode
+            )
+            # 既に別のホットキーが登録されている場合などに失敗する.
+            # そう何回も通るケースは少ないだろうから,
+            # 何回も dialog が出てウザいってことは無いと思う.
+            if not(is_valid_hotkey):
+                dialog_wrapper.ok(
+                    "ホットキー " + name + " の登録に失敗しました." +
+                    os.linesep + "ErrorCode:" + str(win32api.GetLastError())
+                )
+                continue
+
+            self._hotkey_manager.register_callback(name, callback)
+
+    def unregister_hotkeys(self):
+        print "START UnregisterHotkey" # @note デバッグ用. 用済んだら消す.
         self._hotkey_manager.unregister_all()
 
-    def on_hotkey(self, hwnd, message, wparam, lparam):
-        self._hotkey_manager.on_hotkey(hwnd, message, wparam, lparam)
-
     def get_hotkey_callback(self):
-        return self.on_hotkey
+        return self._on_hotkey
+
+    def _on_hotkey(self, hwnd, message, wparam, lparam):
+        self._hotkey_manager.on_hotkey(hwnd, message, wparam, lparam)
 
 if __name__ == '__main__':
     pass

@@ -25,9 +25,9 @@ class HotkeyEntryTest(unittest.TestCase):
 
         def assert_entry(line, exp_name, exp_mod, exp_key):
             hotkey_entry = hotkey_loader.HotkeyEntry(line)
-            self.assertEqual(hotkey_entry._name, exp_name)
-            self.assertEqual(hotkey_entry._modifier, exp_mod)
-            self.assertEqual(hotkey_entry._keycode, exp_key)
+            self.assertEqual(hotkey_entry.get_name(), exp_name)
+            self.assertEqual(hotkey_entry.get_modifier(), exp_mod)
+            self.assertEqual(hotkey_entry.get_keycode(), exp_key)
 
         testname = "hoge"
 
@@ -109,9 +109,9 @@ class HotkeyEntryTest(unittest.TestCase):
         content = loader.read_all()
 
         def assert_entry(hotkey_entry, exp_name, exp_mod, exp_key):
-            self.assertEqual(hotkey_entry._name, exp_name)
-            self.assertEqual(hotkey_entry._modifier, exp_mod)
-            self.assertEqual(hotkey_entry._keycode, exp_key)
+            self.assertEqual(hotkey_entry.get_name(), exp_name)
+            self.assertEqual(hotkey_entry.get_modifier(), exp_mod)
+            self.assertEqual(hotkey_entry.get_keycode(), exp_key)
 
         # ê›íËåèêîÇÃämîF
         self.assertEqual(5, len(content))

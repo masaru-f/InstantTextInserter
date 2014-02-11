@@ -7,6 +7,9 @@ import util_win.windowutil as windowutil
 import selfinfo
 
 def ok(message, title=None):
+    """
+    title È—ª‚Í PROGRAM_NAME ‚ğ“ü‚ê‚é.
+    """
     if title==None:
         title=selfinfo.PROGRAM_NAME
 

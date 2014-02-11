@@ -53,8 +53,8 @@ class EntryPoint:
             termstack.push(triggerwatcher.stop)
             triggerwatcher.start()
 
-            termstack.push(hotkeyloaderinst.unregister_hotkey)
-            hotkeyloaderinst.register_hotkey()
+            termstack.push(hotkeyloaderinst.unregister_hotkeys)
+            hotkeyloaderinst.load_and_register_hotkeys()
 
             gui.start()
 
