@@ -10,6 +10,7 @@ import util_win.trayicongui as trayicongui
 import doublelaunch_checker
 import endhandler
 import menu
+import reloader
 import selfinfo
 import snippet_loader
 import thread_trigger
@@ -31,20 +32,24 @@ if hasattr(sys, 'setdefaultencoding'):
 class EntryPoint:
     def __init__(self):
         with terminator_stack.TerminatorStack() as termstack:
+            # gui の作成
             gui = trayicongui.MainWindow(
                 selfinfo.WINDOWCLASSNAME,
                 selfinfo.TRAYICON_TOOLTIP
             )
             gui.create()
 
+            # 主要インスタンスの作成
             menuinst = menu.Menu()
             triggerwatcher = thread_trigger.TriggerThread()
             hotkeyloaderinst = hotkey_loader.HotkeyLoader(
                 trayicongui.hwndinst.get()
             )
+            reloader.inst.push(snippet_loader.inst)
+            reloader.inst.push(hotkeyloaderinst)
 
             gui.set_callback_on_right_click(menuinst.run)
-            gui.set_callback_on_left_click(snippet_loader.inst.reload)
+            gui.set_callback_on_left_click(reloader.inst.reload)
             gui.set_callback_on_hotkey(hotkeyloaderinst.get_hotkey_callback())
 
             termstack.push(gui.destroy)

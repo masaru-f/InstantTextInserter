@@ -75,6 +75,14 @@ class HotkeyLoader:
         print "START UnregisterHotkey" # @note デバッグ用. 用済んだら消す.
         self._hotkey_manager.unregister_all()
 
+    def reload(self):
+        """
+        ホットキーを再登録する.
+        現在の登録内容を解放して, 設定読み直して, 登録し直す.
+        """
+        self.unregister_hotkeys()
+        self.load_and_register_hotkeys()
+
     def get_hotkey_callback(self):
         return self._on_hotkey
 
