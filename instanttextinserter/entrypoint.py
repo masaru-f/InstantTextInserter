@@ -48,19 +48,24 @@ class EntryPoint:
             reloader.inst.push(snippet_loader.inst)
             reloader.inst.push(hotkeyloaderinst)
 
+            # gui のイベントハンドラへの登録
             gui.set_callback_on_right_click(menuinst.run)
             gui.set_callback_on_left_click(reloader.inst.reload)
             gui.set_callback_on_hotkey(hotkeyloaderinst.get_hotkey_callback())
 
+            # 終了時に gui を破棄するための準備
             termstack.push(gui.destroy)
             endhandler.inst.set(gui.destroy)
 
+            # 主要インスタンスの開始.
+            # 終了時に解放を行わせるため TerminatorStack を使用.
             termstack.push(triggerwatcher.stop)
             triggerwatcher.start()
-
             termstack.push(hotkeyloaderinst.unregister_hotkeys)
             hotkeyloaderinst.load_and_register_hotkeys()
 
+            # gui の開始.
+            # gui ループに入る.
             gui.start()
 
 if __name__ == '__main__':

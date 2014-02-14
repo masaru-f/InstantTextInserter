@@ -23,7 +23,7 @@ class TriggerThread(
     snippet_observer.IObserver
 ):
     """
-    短縮形の入力を監視する.
+    短縮形の入力を監視するスレッド.
     入力されたら対応する定型文を挿入する.
 
     スニペットデータが更新された時に通知してほしいので,
@@ -47,9 +47,6 @@ class TriggerThread(
     def _init(self):
         import os # @note テスト登録用, 用がなければ消す.
 
-        # initialize members
-        # --------------------------------
-
         self._getter = keygetter.KeyGetter()
         self._manager = snippet_manager.SnippetManager()
 
@@ -60,16 +57,12 @@ class TriggerThread(
         # 通知されたスニペットデータを入れておく領域.
         self._snippet_container = None
 
-        # settings about the snippet loader
-        # --------------------------------
-
         snippet_loader.inst.attach(self)
+        # スニペットデータの初回時読み込み.
         snippet_loader.inst.reload()
 
     def _procedure(self):
         # 通知されていれば再読込する.
-        # 毎回条件分岐が走ることになるが性能的には問題無いはず.
-        # -> Bool 型の条件分岐は 1000000 回のループで 0.15 秒かかる程度.
         if self._can_reload:
             self._reload()
             self._can_reload = False
