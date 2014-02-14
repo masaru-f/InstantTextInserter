@@ -7,7 +7,7 @@ import win32con
 
 import util_win.keycode as keycode
 
-import hotkey_loader
+import hotkey_ini_loader
 
 class HotkeyEntryTest(unittest.TestCase):
     def setUp(self):
@@ -24,7 +24,7 @@ class HotkeyEntryTest(unittest.TestCase):
         """
 
         def assert_entry(line, exp_name, exp_mod, exp_key):
-            hotkey_entry = hotkey_loader.HotkeyEntry(line)
+            hotkey_entry = hotkey_ini_loader.HotkeyEntry(line)
             self.assertEqual(hotkey_entry.get_name(), exp_name)
             self.assertEqual(hotkey_entry.get_modifier(), exp_mod)
             self.assertEqual(hotkey_entry.get_keycode(), exp_key)
@@ -71,31 +71,31 @@ class HotkeyEntryTest(unittest.TestCase):
         # 異常系
         try:
             # 修飾キーの指定が無いとエラー
-            hotkey_loader.HotkeyEntry("name")
+            hotkey_ini_loader.HotkeyEntry("name")
             self.assertTrue(False)
         except RuntimeError:
             pass
         try:
             # 文字キーの指定が無いとエラー
-            hotkey_loader.HotkeyEntry("name,as")
+            hotkey_ini_loader.HotkeyEntry("name,as")
             self.assertTrue(False)
         except RuntimeError:
             pass
         try:
             # 空文字列を与えるとエラー
-            hotkey_loader.HotkeyEntry("")
+            hotkey_ini_loader.HotkeyEntry("")
             self.assertTrue(False)
         except RuntimeError:
             pass
         try:
             # 修飾キーが無効だとエラー
-            hotkey_loader.HotkeyEntry("name,qqq,k")
+            hotkey_ini_loader.HotkeyEntry("name,qqq,k")
             self.assertTrue(False)
         except RuntimeError:
             pass
         try:
             # 文字キーが無効だとエラー
-            hotkey_loader.HotkeyEntry("name,sc,invalidname")
+            hotkey_ini_loader.HotkeyEntry("name,sc,invalidname")
             self.assertTrue(False)
         except RuntimeError:
             pass
@@ -105,7 +105,7 @@ class HotkeyEntryTest(unittest.TestCase):
         マジックナンバーは,
         テスト用設定ファイルの内容を決め打ちしている分.
         """
-        loader = hotkey_loader.IniLoader()
+        loader = hotkey_ini_loader.HotkeyIniLoader()
         content = loader.read_all()
 
         def assert_entry(hotkey_entry, exp_name, exp_mod, exp_key):
