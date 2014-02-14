@@ -45,8 +45,6 @@ class TriggerThread(
     # --------------------------------
 
     def _init(self):
-        import os # @note テスト登録用, 用がなければ消す.
-
         self._getter = keygetter.KeyGetter()
         self._manager = snippet_manager.SnippetManager()
 
