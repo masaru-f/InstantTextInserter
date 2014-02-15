@@ -22,19 +22,20 @@ class Menu:
         トレイアイコン上にメニューを表示する.
         """
         creator = popupmenu.Creator()
-        creator.append("Reload", commander_system.CMD_RELOAD)
+        creator.append("&Reload", commander_system.CMD_RELOAD)
         creator.append(
-            "Open snippet folder",
+            "Open &Snippet Folder",
             commander_system.CMD_OPEN_SNIPPET_DIRECTORY
         )
         creator.append(
-            "Open hotkey config file",
+            "Open &Hotkey Config File",
             commander_system.CMD_OPEN_HOTKEY_CONFIG
         )
         creator.append_separator()
-        creator.append("Open InstallDir", commander_system.CMD_OPEN_DIRECTORY)
-        creator.append("Version", commander_system.CMD_SHOW_VERSION)
-        creator.append("Quit", commander_system.CMD_QUIT)
+        creator.append("Open &Install Directory",
+                       commander_system.CMD_OPEN_DIRECTORY)
+        creator.append("&Version", commander_system.CMD_SHOW_VERSION)
+        creator.append("&Quit", commander_system.CMD_QUIT)
 
         menudata = None
         try:
