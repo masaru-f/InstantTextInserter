@@ -16,6 +16,7 @@ CMD_SHOW_VERSION   = "version"
 CMD_QUIT           = "quit"
 CMD_RELOAD         = "reload"
 CMD_OPEN_SNIPPET_DIRECTORY = "snippet_directory"
+CMD_OPEN_HOTKEY_CONFIG = "hotkey_ini"
 
 class StartingPointCommander(commander_interface.ICommander):
     """
@@ -107,6 +108,22 @@ class OpenSnippetDirectoryCommander(commander_interface.ICommander):
         _executer = executer.Executer()
         _executer.execute([selfinfo.SNIPPETFOLDER_FULLPATH])
 
+class OpenHotkeyConfigCommander(commander_interface.ICommander):
+    """
+    ホットキー設定ファイルを開く.
+    """
+    def __init__(self, next_commander=None):
+        commander_interface.ICommander.__init__(self, next_commander)
+
+    def _can_interpret(self, command):
+        if command==CMD_OPEN_HOTKEY_CONFIG:
+            return True
+        return False
+
+    def _interpret(self, command=None):
+        _executer = executer.Executer()
+        _executer.execute([selfinfo.HOTKEYCONFIG_FULLPATH])
+
 if __name__ == '__main__':
     """
     簡単なテスト.
@@ -121,10 +138,12 @@ if __name__ == '__main__':
     ver = VersionCommander(opendir)
     reloadcmd = ReloadCommander(ver)
     opensnidir = OpenSnippetDirectoryCommander(reloadcmd)
-    sp = StartingPointCommander(opensnidir)
+    hotkeyconfig = OpenHotkeyConfigCommander(opensnidir)
+    sp = StartingPointCommander(hotkeyconfig)
 
     #sp.run(CMD_OPEN_DIRECTORY)
     #sp.run(CMD_SHOW_VERSION)
     #sp.run(CMD_RELOAD)
     #sp.run(CMD_OPEN_SNIPPET_DIRECTORY)
+    sp.run(CMD_OPEN_HOTKEY_CONFIG)
     #sp.run(CMD_QUIT)

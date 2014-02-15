@@ -17,6 +17,8 @@ class CommanderChain:
             commander_system.ExitCommander(
             commander_system.ReloadCommander(
             commander_system.OpenSnippetDirectoryCommander(
+            commander_system.OpenHotkeyConfigCommander(
+            )
             )
             )
             )

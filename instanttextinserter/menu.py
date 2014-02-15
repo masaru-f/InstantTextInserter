@@ -27,7 +27,10 @@ class Menu:
             "Open snippet folder",
             commander_system.CMD_OPEN_SNIPPET_DIRECTORY
         )
-        #creator.append("Open snippet [hoge]", "currentsnippet")
+        creator.append(
+            "Open hotkey config file",
+            commander_system.CMD_OPEN_HOTKEY_CONFIG
+        )
         creator.append_separator()
         creator.append("Open InstallDir", commander_system.CMD_OPEN_DIRECTORY)
         creator.append("Version", commander_system.CMD_SHOW_VERSION)
@@ -68,4 +71,5 @@ if __name__ == '__main__':
 
         mainwindow.set_callback_on_left_click(on_leftclick)
         mainwindow.set_callback_on_right_click(on_rightclick)
-        mainwindow.create_and_start()
+        mainwindow.create()
+        mainwindow.start()
