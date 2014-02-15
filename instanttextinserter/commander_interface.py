@@ -24,7 +24,7 @@ class ICommander:
     def _can_interpret(self, command):
         raise NotImplementedError("implement _can_interpret!")
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         raise NotImplementedError("implement _interpret!")
 
 '''

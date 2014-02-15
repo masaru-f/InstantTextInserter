@@ -42,7 +42,7 @@ class OpenDirectoryCommander(commander_interface.ICommander):
             return True
         return False
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         _executer = executer.Executer()
         _executer.execute([selfinfo.PROGRAM_DIRECTORY])
 
@@ -58,7 +58,7 @@ class VersionCommander(commander_interface.ICommander):
             return True
         return False
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         dialog_wrapper.ok(selfinfo.PROGRAM_INFO, "ÉoÅ[ÉWÉáÉìèÓïÒ")
 
 class ExitCommander(commander_interface.ICommander):
@@ -73,7 +73,7 @@ class ExitCommander(commander_interface.ICommander):
             return True
         return False
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         endhandler.inst.run()
 
 class ReloadCommander(commander_interface.ICommander):
@@ -88,7 +88,7 @@ class ReloadCommander(commander_interface.ICommander):
             return True
         return False
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         reloader.inst.reload()
 
 class OpenSnippetDirectoryCommander(commander_interface.ICommander):
@@ -103,7 +103,7 @@ class OpenSnippetDirectoryCommander(commander_interface.ICommander):
             return True
         return False
 
-    def _interpret(self, command):
+    def _interpret(self, command=None):
         _executer = executer.Executer()
         _executer.execute([selfinfo.SNIPPETFOLDER_FULLPATH])
 
