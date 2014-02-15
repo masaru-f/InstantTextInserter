@@ -15,7 +15,7 @@ class CommanderChain:
             commander_system.OpenDirectoryCommander(
             commander_system.VersionCommander(
             commander_system.ExitCommander(
-            commander_system.ReloadSnippetCommander(
+            commander_system.ReloadCommander(
             commander_system.OpenSnippetDirectoryCommander(
             )
             )

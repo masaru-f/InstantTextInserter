@@ -8,13 +8,13 @@ import commander_interface
 
 import dialog_wrapper
 import endhandler
+import reloader
 import selfinfo
-import snippet_loader
 
 CMD_OPEN_DIRECTORY = "dir"
 CMD_SHOW_VERSION   = "version"
 CMD_QUIT           = "quit"
-CMD_RELOAD_SNIPPET = "reload_snippet"
+CMD_RELOAD         = "reload"
 CMD_OPEN_SNIPPET_DIRECTORY = "snippet_directory"
 
 class StartingPointCommander(commander_interface.ICommander):
@@ -76,20 +76,20 @@ class ExitCommander(commander_interface.ICommander):
     def _interpret(self, command):
         endhandler.inst.run()
 
-class ReloadSnippetCommander(commander_interface.ICommander):
+class ReloadCommander(commander_interface.ICommander):
     """
-    スニペットデータを再読込する.
+    設定を再読込する.
     """
     def __init__(self, next_commander=None):
         commander_interface.ICommander.__init__(self, next_commander)
 
     def _can_interpret(self, command):
-        if command==CMD_RELOAD_SNIPPET:
+        if command==CMD_RELOAD:
             return True
         return False
 
     def _interpret(self, command):
-        snippet_loader.inst.reload()
+        reloader.inst.reload()
 
 class OpenSnippetDirectoryCommander(commander_interface.ICommander):
     """
@@ -119,12 +119,12 @@ if __name__ == '__main__':
     exitcmd = ExitCommander()
     opendir = OpenDirectoryCommander(exitcmd)
     ver = VersionCommander(opendir)
-    reloadsnippet = ReloadSnippetCommander(ver)
-    opensnidir = OpenSnippetDirectoryCommander(reloadsnippet)
+    reloadcmd = ReloadCommander(ver)
+    opensnidir = OpenSnippetDirectoryCommander(reloadcmd)
     sp = StartingPointCommander(opensnidir)
 
     #sp.run(CMD_OPEN_DIRECTORY)
     #sp.run(CMD_SHOW_VERSION)
-    #sp.run(CMD_RELOAD_SNIPPET)
+    #sp.run(CMD_RELOAD)
     #sp.run(CMD_OPEN_SNIPPET_DIRECTORY)
     #sp.run(CMD_QUIT)

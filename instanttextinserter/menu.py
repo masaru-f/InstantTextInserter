@@ -22,7 +22,7 @@ class Menu:
         トレイアイコン上にメニューを表示する.
         """
         creator = popupmenu.Creator()
-        creator.append("Reload", commander_system.CMD_RELOAD_SNIPPET)
+        creator.append("Reload", commander_system.CMD_RELOAD)
         creator.append(
             "Open snippet folder",
             commander_system.CMD_OPEN_SNIPPET_DIRECTORY
