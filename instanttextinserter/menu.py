@@ -58,18 +58,4 @@ class Menu:
         self._commanderchain.run(command)
 
 if __name__ == '__main__':
-    """
-    ä»íPÇ…ìÆçÏämîF.
-    """
-    def on_rightclick():
-        menu = Menu()
-        menu.run()
-
-    with trayicongui.MainWindow(classname="hogewndclass") as mainwindow:
-        def on_leftclick():
-            mainwindow.stop()
-
-        mainwindow.set_callback_on_left_click(on_leftclick)
-        mainwindow.set_callback_on_right_click(on_rightclick)
-        mainwindow.create()
-        mainwindow.start()
+    pass
