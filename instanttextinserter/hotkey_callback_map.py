@@ -9,6 +9,7 @@ class _CALLBACK_ENTITY:
         import commander_system as cs
         self.reload = cs.ReloadCommander()
         self.open_snippet_folder = cs.OpenSnippetDirectoryCommander()
+        self.open_hotkey_config = cs.OpenHotkeyConfigCommander()
         self.version = cs.VersionCommander()
 
 _entity = _CALLBACK_ENTITY()
@@ -22,5 +23,6 @@ _entity = _CALLBACK_ENTITY()
 callback_map = {
     "reload"              : _entity.reload._interpret,
     "open_snippet_folder" : _entity.open_snippet_folder._interpret,
-    "version"             : _entity.version._interpret
+    "open_hotkey_config"  : _entity.open_hotkey_config._interpret,
+    "version"             : _entity.version._interpret,
 }
