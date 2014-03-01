@@ -59,7 +59,6 @@ class Tracker:
         # •\¦‚µ‚½ƒƒjƒ…[‚ğ•Â‚¶‚ê‚È‚©‚Á‚½‚è‚·‚é‚½‚ß.
         windowutil.ActivateWindow(self._hwnd)
 
-        print str(menuhandle)
         selected_id = win32gui.TrackPopupMenu(\
                                 menuhandle,\
                                 win32con.TPM_RETURNCMD, \
