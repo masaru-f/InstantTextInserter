@@ -1,6 +1,7 @@
 # encoding: shift-jis
 
 import util.log as log
+import util.exceptions as exceptions
 
 class Reloader:
     """
@@ -19,9 +20,8 @@ class Reloader:
             try:
                 reload_target.reload()
             except AttributeError as e:
-                log.debug(
-                    "the reload target is invalid./" +
-                    str(e)
+                raise exceptions.ProgrammersMistake(
+                    "the reload target is invalid./" + str(e)
                 )
 # シングルトンインスタンス
 inst = Reloader()
