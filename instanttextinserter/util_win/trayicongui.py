@@ -5,9 +5,6 @@ import win32gui
 import win32con
 import win32api
 
-# log使用部分の削除(utilはlogを使いたくない)
-import util.log as log
-
 import util_win.trayicon as trayicon
 
 """
@@ -25,14 +22,12 @@ class MainLoop:
         self._can_running = True
 
     def start(self):
-        log.info("mainloop start...")
         while self._can_running:
             b, msg = win32gui.GetMessage(0, 0, 0)
             if not(msg):
                 break
             win32gui.TranslateMessage(msg)
             win32gui.DispatchMessage(msg)
-        log.info("mainloop stop.")
 
     def stop(self, hwnd):
         """
@@ -145,7 +140,7 @@ class MainWindow:
         if self._hwnd:
             return self._hwnd
 
-        log.debug("before registering window class...")
+        # ウィンドウクラスを登録
         wc = win32gui.WNDCLASS()
         self._hinst = wc.hInstance = win32api.GetModuleHandle(None)
         wc.lpszClassName = self._classname
@@ -154,9 +149,8 @@ class MainWindow:
         wc.hbrBackground = win32con.COLOR_WINDOW
         wc.lpfnWndProc = self._message_map
         self._classatom = win32gui.RegisterClass(wc)
-        log.debug("after registering window class.")
 
-        log.debug("before creating window...")
+        # ウィンドウを生成
         style = win32con.WS_OVERLAPPED | win32con.WS_SYSMENU
         windowpos = (0, 0)
         windowsize = (1, 1)
@@ -174,15 +168,12 @@ class MainWindow:
             None,
         )
         hwndinst._hwnd = self._hwnd # 利用者参照先にも入れる.
-        log.debug("after creating window.")
 
-        log.debug("before updating window...")
         win32gui.UpdateWindow(self._hwnd)
-        log.debug("after updating window.")
 
-        log.debug("before showing window...")
+        # ウィンドウはウィンドウメッセージを扱うために作ったものなので
+        # 利用者には見せない
         win32gui.ShowWindow(self._hwnd, win32con.SW_HIDE)
-        log.debug("after showing window.")
 
         self._trayicon = trayicon.TrayIcon(
             self._hwnd,
@@ -197,7 +188,7 @@ class MainWindow:
         呼び出し元でウィンドウハンドルが欲しいケースに対応するため.
         """
         if not(self._hwnd):
-            log.debug("cannot start. main window is not created.")
+            # @todo main window is not created.
             return
 
         self._mainloop.start() # blocking.
@@ -207,7 +198,6 @@ class MainWindow:
         GUI ループから抜ける.
         @note ウィンドウを作成したスレッドと別のスレッドから呼び出してもよい.
         """
-        log.debug("mainwindow stop!")
         self._mainloop.stop(self._hwnd)
 
     def destroy(self):
@@ -226,30 +216,21 @@ class MainWindow:
 
         try:
             self._trayicon.destroy()
-            log.info("destroyed trayicon.")
         except Exception as e:
-            log.error(
-                "destroying trayicon failed." +
-                str(type(e)) + "/" + str(e)
-            )
+            # destroying trayicon failed.
+            pass
 
         try:
             win32gui.DestroyWindow(self._hwnd)
-            log.info("destroyed window.")
         except Exception as e:
-            log.error(
-                "destroying window failed." +
-                str(type(e)) + "/" + str(e)
-            )
+            # destroying window failed.
+            pass
 
         try:
             win32gui.UnregisterClass(self._classatom, self._hinst)
-            log.info("unregistered class.")
         except Exception as e:
-            log.error(
-                "unregistered class failed." +
-                str(type(e)) + "/" + str(e)
-            )
+            # unregistered window class failed.
+            pass
 
     def _on_hotkey(self, hwnd, message, wparam, lparam):
         if callable(self._callback_on_hotkey):
@@ -267,15 +248,12 @@ class MainWindow:
         lparam: 発生したイベントに関連するメッセージコード.
         """
         if lparam==win32con.WM_RBUTTONUP:
-            log.debug("right clicked.")
             if callable(self._callback_on_right_click):
                 self._callback_on_right_click()
         elif lparam==win32con.WM_LBUTTONUP:
-            log.debug("left clicked.")
             if callable(self._callback_on_left_click):
                 self._callback_on_left_click()
         elif lparam==win32con.WM_MBUTTONUP:
-            log.debug("middle clicked.")
             if callable(self._callback_on_middle_click):
                 self._callback_on_middle_click()
 
