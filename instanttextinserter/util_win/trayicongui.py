@@ -184,12 +184,11 @@ class MainWindow:
     def start(self):
         """
         GUIループに入る.
-        create() と分けているのは, create() 後に
-        呼び出し元でウィンドウハンドルが欲しいケースに対応するため.
+        先に craate() でウィンドウを生成しておく必要がある.
+        @exception RuntimeError ウィンドウが未だ生成されていない
         """
         if not(self._hwnd):
-            # @todo main window is not created.
-            return
+            raise RuntimeError("Main window is not created.")
 
         self._mainloop.start() # blocking.
 
@@ -217,25 +216,23 @@ class MainWindow:
         try:
             self._trayicon.destroy()
         except Exception as e:
-            # destroying trayicon failed.
+            # 他の終了処理もあるのでとりあえず続行.
             pass
 
         try:
             win32gui.DestroyWindow(self._hwnd)
         except Exception as e:
-            # destroying window failed.
+            # 他の終了処理もあるのでとりあえず続行.
             pass
 
         try:
             win32gui.UnregisterClass(self._classatom, self._hinst)
         except Exception as e:
-            # unregistered window class failed.
+            # 他の終了処理もあるのでとりあえず続行.
             pass
 
     def _on_hotkey(self, hwnd, message, wparam, lparam):
         if callable(self._callback_on_hotkey):
-            # @todo 引数を適当に間引く. index, modifier, keycode くらい.
-            print "from trayicongui, " + str(self)
             self._callback_on_hotkey(hwnd, message, wparam, lparam)
 
     def _on_destroy(self, hwnd, message, wparam, lparam):
@@ -243,9 +240,8 @@ class MainWindow:
 
     def _on_tray(self, hwnd, message, wparam, lparam):
         """
-        [memo]
-        wparam: マウスイベントが発生したタスクバーアイコンのID.
-        lparam: 発生したイベントに関連するメッセージコード.
+        @param wparam マウスイベントが発生したタスクバーアイコンのID
+        @param lparam 発生したイベントに関連するメッセージコード
         """
         if lparam==win32con.WM_RBUTTONUP:
             if callable(self._callback_on_right_click):
@@ -269,7 +265,6 @@ if __name__ == '__main__':
     def stopthreadbody(mainwindowinst):
         time.sleep(3)
         mainwindowinst.stop()
-        #mainwindowinst.destroy()
 
     with MainWindow(classname="hogewndclass") as mainwindow:
         stopthread = threading.Thread(
