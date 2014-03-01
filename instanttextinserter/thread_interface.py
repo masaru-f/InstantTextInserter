@@ -35,16 +35,15 @@ class IWatcherThread:
                                        (), \
                                        {}  \
         )
-        log.debug("start " + str(self._name))
+        log.info("start thread:" + str(self._name))
         self._thread.start()
 
     def stop(self):
         self._endflag = True
         if self._thread:
-            log.debug("before joining " + str(self._name) + "...")
+            log.info("joining thread...:" + str(self._name))
             self._thread.join()
-            log.debug("after joining " + str(self._name))
-        log.debug("rest thread: " + str(threading.enumerate()))
+            log.info("stopthread:" + str(self._name))
 
     def _body(self):
         """
