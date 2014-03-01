@@ -43,7 +43,7 @@ class Menu:
             menudata = creator.get_menudata()
         except ValueError as e:
             creator.destroy() # @todo with Žg‚Á‚Ä RAII ‚µ‚½‚¢
-            exceptions.ProgrammersMistake(str(e))
+            raise exceptions.ProgrammersMistake(str(e))
 
         tracker = popupmenu.Tracker(trayicongui.hwndinst.get())
         command = None
