@@ -43,7 +43,7 @@ class IWatcherThread:
         if self._thread:
             log.info("joining thread...:" + str(self._name))
             self._thread.join()
-            log.info("stopthread:" + str(self._name))
+            log.info("stop thread:" + str(self._name))
 
     def _body(self):
         """
