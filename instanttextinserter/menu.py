@@ -3,6 +3,7 @@
 import win32api
 
 import util.log as log
+import util.exceptions as exceptions
 
 import util_win.popupmenu as popupmenu
 import util_win.trayicongui as trayicongui
@@ -41,9 +42,8 @@ class Menu:
         try:
             menudata = creator.get_menudata()
         except ValueError as e:
-            log.critical("Programmer's mistake. " + str(e))
             creator.destroy() # @todo with Žg‚Á‚Ä RAII ‚µ‚½‚¢
-            return
+            exceptions.ProgrammersMistake(str(e))
 
         tracker = popupmenu.Tracker(trayicongui.hwndinst.get())
         command = None

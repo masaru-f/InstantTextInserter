@@ -66,9 +66,9 @@ class EntryPoint:
 
             # gui の開始.
             # gui ループに入る.
-            log.info("mainloop start.")
+            log.info("start mainloop.")
             gui.start()
-            log.info("mainloop end.")
+            log.info("end mainloop.")
 
 if __name__ == '__main__':
     doublelaunch_checker.check_and_dispose()
