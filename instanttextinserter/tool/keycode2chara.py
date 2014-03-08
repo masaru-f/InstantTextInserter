@@ -63,7 +63,7 @@ class FileWriter:
 
 # --------------------------------
 
-def printlist():
+def print_keycode2chara_list():
     """
     SnippetManager に持たせるリストを作る.
     これで出力した文字列を丸々コピペする.
@@ -72,6 +72,19 @@ def printlist():
     for i in range(256):
         c = keycode2chara(i)
         s = s + "'" + c + "',"
+    print s
+
+def print_supported_keycode_list():
+    """
+    SnippetManager に持たせるリストを作る.
+    これで出力した文字列を丸々コピペする.
+    """
+    s = ""
+    for i in range(256):
+        c = keycode2chara(i)
+        if c==INVALID_CHAR:
+            continue
+        s = s + str(i) + ","
     print s
 
 def create_file4test():
@@ -91,5 +104,6 @@ def create_file4test():
     writer = FileWriter()
     writer.write("charatest.txt", ls)
 
-printlist()
+print_keycode2chara_list()
+print_supported_keycode_list()
 create_file4test()

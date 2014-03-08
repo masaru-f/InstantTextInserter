@@ -31,8 +31,10 @@ class TriggerThread(
     """
 
     # スレッドループの待機時間.
-    # INTERVAL_SEC = 0.01 # cpu使用率 常時 2-3% 消費
-    INTERVAL_SEC = 0.03 # 1-2秒間隔 で 1-3% 消費
+    # 0.05 だとループ回るのが遅くてキー入力の捕捉漏れが起きる.
+    # 0.01 だとループ回るのが早すぎてCPU負担が大きい.
+    # 0.03 が対処療法的な最適値.
+    INTERVAL_SEC = 0.03
 
     def __init__(self):
         thread_interface.IWatcherThread.__init__(
@@ -65,7 +67,7 @@ class TriggerThread(
             self._reload()
             self._can_reload = False
 
-        for i in range(keygetter.VK_MAX):
+        for i in snippet_manager.SnippetManager.supported_keycode_list:
             if self._getter.is_pushed_once(i):
                 self._manager.input(i)
 
