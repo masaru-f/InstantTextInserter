@@ -64,10 +64,33 @@ class SnippetPaster:
         if cursorstring_position==-1:
             return 0
 
+        offset_for_crlf = self._get_offset_for_crlf(u_container)
+
         # cursorstring を除去する
         u_container = u_container.replace(SnippetPaster.CURSOR_STRING, "")
 
-        return len(u_container)-cursorstring_position
+        return len(u_container)-cursorstring_position-offset_for_crlf
+
+    def _get_offset_for_crlf(self, u_container):
+        """
+        CRLF の長さは unicode string では 2 文字として計算されるが,
+        エディタ上では一文字分として計算される.
+        そのためカーソルをバックさせる際に CRLF が n 個あったら
+        n 文字分バックする位置がずれてしまう.
+        これを防ぐために, バックする際に CRLF を何個通るかを計算し,
+        その個数(これを求める)分だけバックカウントから引いてやる.
+        """
+        crlflist = u_container.split('\r\n')
+        num_crlf = len(crlflist) # 1-origin. CRLFが一つもないなら 1
+        for curlineno_0org in range(num_crlf):
+            elm = crlflist[curlineno_0org]
+            if elm.find(SnippetPaster.CURSOR_STRING)==-1:
+            	continue
+            # 最初に見つかった cursor string を使う.
+            #
+            # num_crlf の 1-origin を使って差分を計算.
+            return num_crlf - (curlineno_0org + 1)
+        return 0
 
 if __name__ == '__main__':
     pass
