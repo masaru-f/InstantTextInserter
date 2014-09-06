@@ -3,3 +3,5 @@ dist/
 *.*.*
 .coverage
 exec*.bat
+snippet
+hotkey.ini

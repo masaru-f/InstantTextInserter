@@ -1,0 +1,8 @@
+====u1@====
+english.
+cursor string >%cursor%< <- here!.
+utf8 lf no bom
+====u2@====
+日本語
+cursor 文字列 >%cursor%< <- ここ!.
+utf8 lf no bom

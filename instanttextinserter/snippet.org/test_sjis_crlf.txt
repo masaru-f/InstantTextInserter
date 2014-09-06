@@ -1,0 +1,8 @@
+====s1@====
+english.
+cursor string >%cursor%< <- here!.
+utf8 lf no bom
+====s2@====
+“ú–{Œê
+cursor •¶Žš—ñ >%cursor%< <- ‚±‚±!.
+utf8 lf no bom
