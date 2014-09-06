@@ -3,6 +3,8 @@
 import os
 from time import sleep
 
+import util.log as log
+
 import util_win.clipboard as clipboard
 import util_win.keysimulator as keysimulator
 
@@ -35,7 +37,16 @@ class SnippetPaster:
 
         # カーソル位置に戻るための文字数を計算して,
         # その分だけ Left key で移動する.
-        backcount = self.get_cursorbackcount(deployed_phrase)
+        backcount = 0
+        try:
+            backcount = self.get_cursorbackcount(deployed_phrase)
+        except UnicodeDecodeError as e:
+            # 処置内容は暫定.
+            # @todo たぶん dialog_wrapper でユーザに警告すると思う.
+            log.warning("get_cursorbackcount() failed./" +
+                        "abbr=%s, phrase=%2/" % (abbr, phrase) +
+                        "exception=%s" % str(e))
+            pass
         for i in range(backcount):
             ks.left()
 
@@ -53,10 +64,11 @@ class SnippetPaster:
         戻る必要が無ければ 0.
 
         @param container cursorstring を含む文字列
+        @exception UnicodeDecodeError デコードに失敗
         """
         # 文字数計算を正しく行うため unicode string で計算する.
         # 先頭の cursorstring の位置を求める.
-        u_container = container.decode()
+        u_container = self._flexible_decode(container)
         cursorstring_position = u_container.find(SnippetPaster.CURSOR_STRING)
 
         # 見つからない
@@ -90,6 +102,22 @@ class SnippetPaster:
             # num_crlf の 1-origin を使って差分を計算.
             return num_crlf - (curlineno_0org + 1)
         return 0
+
+    def _flexible_decode(self, src):
+        """
+        src を decode したものを返す.
+        色んな文字コードで decode を試し, 最初に成功したものを採用する.
+        @exception UnicodeDecodeError デコードに失敗
+        """
+        codename_list = ['shift-jis', 'utf-8', 'cp932', 'euc-jp']
+        for elm in codename_list:
+            try:
+                ret = src.decode(elm)
+                return ret
+            except UnicodeDecodeError:
+                continue
+
+        raise UnicodeDecodeError('Your charset is not supported.')
 
 if __name__ == '__main__':
     pass
