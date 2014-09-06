@@ -1,6 +1,7 @@
 *.pyc
 dist/
 *.*.*
+!*.*.org
 .coverage
 exec*.bat
 snippet
