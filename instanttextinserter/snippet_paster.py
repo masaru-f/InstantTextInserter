@@ -26,9 +26,8 @@ class SnippetPaster:
         ks = keysimulator.KeySimulator()
 
         # ’ZkŒ`“ü—Í•ª‚ğ BS ‚ÅÁ‹‚·‚é.
-        # •¶š—ñ‚Ì’·‚³‚ğ³‚µ‚­‹‚ß‚é‚½‚ß unicode string ‚ÅŒvZ‚·‚é.
-        # abbr ‚Æ‚µ‚Ä ascii ‚µ‚©‹–‚µ‚Ä‚È‚¢‚ª, ‚Ü‚ ”O‚Ì‚½‚ß.
-        abbrlength = len(abbr.decode())
+        # ’ZkŒ`‚Í ascii ‚µ‚©‘z’è‚µ‚Ä‚È‚¢‚½‚ß, decode ‚Ís‚í‚È‚¢.
+        abbrlength = len(abbr)
         for i in range(abbrlength):
             ks.backspace()
 
