@@ -10,6 +10,16 @@ import util_win.keysimulator as keysimulator
 
 import macro
 
+class UnsupportedDecodeError(Exception):
+    """
+    サポートしていない文字コードを decode する時に投げる例外.
+    """
+    def __init__(self, msg):
+        self._msg = msg
+        return
+    def __str__(self):
+        return self._msg
+
 class SnippetPaster:
     # マクロ解釈ルーチンが狂わないように
     # '%' で囲んだ文字列にする,
@@ -40,11 +50,11 @@ class SnippetPaster:
         backcount = 0
         try:
             backcount = self.get_cursorbackcount(deployed_phrase)
-        except UnicodeDecodeError as e:
+        except (UnicodeDecodeError, UnsupportedDecodeError) as e:
             # 処置内容は暫定.
             # @todo たぶん dialog_wrapper でユーザに警告すると思う.
             log.warning("get_cursorbackcount() failed./" +
-                        "abbr=%s, phrase=%2/" % (abbr, phrase) +
+                        "abbr=%s, phrase=%s/" % (abbr, phrase) +
                         "exception=%s" % str(e))
             pass
         for i in range(backcount):
@@ -106,10 +116,12 @@ class SnippetPaster:
     def _flexible_decode(self, src):
         """
         src を decode したものを返す.
-        色んな文字コードで decode を試し, 最初に成功したものを採用する.
+        windows アプリだし, サポートするのは shift-jis のみする方針.
         @exception UnicodeDecodeError デコードに失敗
+        @exception UnsupportedDecodeError 未サポートの文字コードをデコード
         """
-        codename_list = ['shift-jis', 'utf-8', 'cp932', 'euc-jp']
+        #codename_list = ['shift-jis', 'utf-8', 'cp932', 'euc-jp']
+        codename_list = ['shift-jis']
         for elm in codename_list:
             try:
                 ret = src.decode(elm)
@@ -117,7 +129,7 @@ class SnippetPaster:
             except UnicodeDecodeError:
                 continue
 
-        raise UnicodeDecodeError('Your charset is not supported.')
+        raise UnsupportedDecodeError('Your charset is not supported.')
 
 if __name__ == '__main__':
     pass
