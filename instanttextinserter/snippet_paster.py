@@ -51,10 +51,11 @@ class SnippetPaster:
         try:
             backcount = self.get_cursorbackcount(deployed_phrase)
         except (UnicodeDecodeError, UnsupportedDecodeError) as e:
-            # 処置内容は暫定.
-            # @todo たぶん dialog_wrapper でユーザに警告すると思う.
-            log.warning("get_cursorbackcount() failed./" +
-                        "abbr=%s, phrase=%s/" % (abbr, phrase) +
+            # いちいちユーザに警告するとうざいため
+            # あえて何もしない.
+            # 文字化けしたテキストがそのまま貼り付けられることになる.
+            log.warning("get_cursorbackcount() failed.\n" +
+                        "abbr=%s, phrase=%s\n" % (abbr, phrase) +
                         "exception=%s" % str(e))
             pass
         for i in range(backcount):
