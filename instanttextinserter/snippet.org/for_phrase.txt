@@ -1,0 +1,48 @@
+====p1====
+よろしくお願いいたします。
+====p2====
+hogehoge株式会社 第一事業部 第一営業課 名無し と申します。
+いつもお世話になっております。改行も↓に一つありますよ。
+
+====3.14159====
+3.14159265358979
+====p3====
+%equal%===============
+%=%===============
+先頭に = がある場合はマクロが使えるのでイケるはずです↑
+==p4==
+#include <stdio.h>
+
+int main(){
+	return 0;
+}
+==p5==
+// VN記述部 _vn とLN記述部 _ln から重複を除いて _vn に再代入
+#module
+#defcfunc DoubleObjDel str _vn,str _ln
+	vn=_vn:ln=_ln
+	k=strlen(vn)/2:l=strlen(ln)/2
+	kpl=double(k)/double(l)
+	
+	repeat l
+		i=cnt
+
+		// jl(LNのi番目の文字)が00ならスキップ
+		jl=strmid(ln,i*2,2)
+		if jl="00":continue
+
+		// vi(LNのi番目に対応するVNの番目)が非整数ならスキップ
+		vi=double(i)*kpl
+		if IsInteger(vi)=0:continue
+
+		// jv(VNのvi番目)が00ならスキップ
+		vi=int(vi)
+		jv=strmid(vn,vi*2,2)
+		if jv="00":continue
+
+		// VNのvi番目を00に書き換え
+		vn=strmid(vn,0,vi*2)+"00"+strmid(vn,(vi*2)+2,strlen(vn))
+	loop
+
+	return vn
+#global
