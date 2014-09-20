@@ -33,6 +33,8 @@ class HotkeyEntry:
 
         if len(self._name)==0:
             raise RuntimeError("name is empty.")
+        if self._name[0] == ';':
+            raise RuntimeError("this name is comment.")
 
         if self._modifier == 0:
             raise RuntimeError("modifier is invalid.")

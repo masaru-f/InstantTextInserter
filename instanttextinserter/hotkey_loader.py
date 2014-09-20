@@ -53,7 +53,6 @@ class HotkeyLoader:
             try:
                 callback = hotkey_callback_map.callback_map[name]
             except KeyError:
-                print name # @note デバッグ用途なので用が済んだら消す.
                 continue
 
             is_valid_hotkey = self._hotkey_manager.register_hotkey(
