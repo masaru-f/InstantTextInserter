@@ -48,11 +48,17 @@ class HotkeyLoader:
             keycode = hotkey_entry.get_keycode()
 
             # 対応する name のコールバック関数が無ければ無効.
-            # つまり callback_map に登録した name のみが有効.
+            #
+            # コールバック関数が見つからないパターン
+            # - name が callback_map に対応していない(無効な名前)
+            # - name がコメント
             callback = None
             try:
                 callback = hotkey_callback_map.callback_map[name]
             except KeyError:
+                # 現状ユーザ見えの警告は出さないことにする.
+                # コメントなのか非対応nameなのかの区別がつかないから.
+                # @todo コメント時は警告出さないように修正する?
                 continue
 
             is_valid_hotkey = self._hotkey_manager.register_hotkey(
