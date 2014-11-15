@@ -1,0 +1,4 @@
+====datetimeq====
+%yyyy%”N%momo%ŒŽ%dd%“ú(%yj%) %hh%Žž%momo%•ª%ss%•b
+====datetime2q====
+%yy%/%momo%/%dd%(%ye%)

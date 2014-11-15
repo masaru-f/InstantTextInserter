@@ -4,5 +4,4 @@ dist/
 !*.*.org
 .coverage
 exec*.bat
-snippet
 hotkey.ini
