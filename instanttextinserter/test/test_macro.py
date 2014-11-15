@@ -36,6 +36,9 @@ class MacroTest(unittest.TestCase):
             print str(i) + "'s deployment test"
             self.assertEqual(expect, actual)
 
+        # ---- 日付時刻関連マクロは, 一つ一つ検査するのが面倒なので
+        #      上モノの Macro 側で検査する. ----
+
     def testMacro(self):
         m = macro.Macro()
 
@@ -52,6 +55,12 @@ class MacroTest(unittest.TestCase):
             testdata = "hoge%fuga%piyo"
             expect = testdata
             self.assertEqual(expect, m.deploy(testdata))
+
+        # 日付時刻関連
+        print "==== about datestime string(print only) ===="
+        print m.deploy("%yy%/%momo%/%dd%(%yj%)")
+        print m.deploy("%yyyy%/%momo%/%dd%(%ye%)")
+        print m.deploy("(hour)(minute)(second) : %hh%%mimi%%ss%")
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,16 +2,29 @@
 
 import os
 
+import util.datetimestring as datetimestring
+
 class SystemMacro:
     """
     システムマクロ.
     何に展開するかを内部的に定めてあるマクロ.
     """
     def __init__(self):
+        self.now_as_string = datetimestring.Datetime()
+
         # @note value は文字列 or 文字列を返す引数無し関数にすること.
         self._dict = {
             "equal"     :"=",
             "="         :"=",
+            "yy"        :self.now_as_string.yy,
+            "yyyy"      :self.now_as_string.yyyy,
+            "momo"      :self.now_as_string.momo,
+            "dd"        :self.now_as_string.dd,
+            "yj"        :self.now_as_string.youbi_j,
+            "ye"        :self.now_as_string.youbi_e,
+            "hh"        :self.now_as_string.hh,
+            "mimi"      :self.now_as_string.mimi,
+            "ss"        :self.now_as_string.ss,
         }
 
     def get(self, key):
