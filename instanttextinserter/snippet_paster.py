@@ -29,14 +29,26 @@ class SnippetPaster:
         self._macro = macro.Macro()
 
     def paste(self, abbr, phrase):
-        # 元々あったクリップボード内容を退避しておき,
-        # paste 後に元に戻す.
-        original_clipboardstr = clipboard.Clipboard.get()
+        # 定型文貼付後に, 元々のクリップボード内容を復旧するための退避.
+        original_clipboardstr = None
+        try:
+            original_clipboardstr = clipboard.Clipboard.get()
+        except Exception as e:
+            log.warning(e)
+            log.warning('failed getting original clipboardstr.')
+            # 復旧できなくても容認する.
+            pass
 
         deployed_phrase = self._macro.deploy(phrase)
-        clipboard.Clipboard.set(
-            self._get_phrase_for_copy(deployed_phrase)
-        )
+        try:
+            clipboard.Clipboard.set(
+                self._get_phrase_for_copy(deployed_phrase)
+            )
+        except Exception as e:
+            log.warning(e)
+            log.warning('failed setting fixed-phrase')
+            # こうなっては定型文貼付は行えないため, 処理は中断.
+            return
 
         ks = keysimulator.KeySimulator()
 
