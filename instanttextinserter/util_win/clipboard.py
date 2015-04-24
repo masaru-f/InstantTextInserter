@@ -35,28 +35,17 @@ class Clipboard:
         if not(isinstance(s, str)):
             return False
 
-        if not(Clipboard._open()):
-            return False
-
-        # クリップボードに残っているデータを消す.
-        # これをしないと上手くコピーされないことがある.
-        win32clipboard.EmptyClipboard()
-
         # グローバルヒープ領域を確保
         hMem = ctypes.windll.kernel32.GlobalAlloc(
             win32con.GMEM_MOVEABLE,
             len(s)+1
         )
         if hMem==0:
-            Clipboard._close()
             return False
-
         # 確保した領域をロック.
         pMemBlock = ctypes.windll.kernel32.GlobalLock(hMem)
         if pMemBlock==0:
-            Clipboard._close()
             return False
-
         # 確保した領域にコピーするデータを書き込む.
         pBuffer = ctypes.windll.kernel32.lstrcpy(
             ctypes.c_char_p(pMemBlock),
@@ -64,8 +53,15 @@ class Clipboard:
         )
         if pBuffer==0:
             ctypes.windll.kernel32.GlobalUnlock(hMem)
-            Clipboard._close()
             return False
+        ctypes.windll.kernel32.GlobalUnlock(hMem)
+
+        # クリップボードを開く.
+        if not(Clipboard._open()):
+            return False
+        # クリップボードに残っているデータを消す.
+        # これをしないと上手くコピーされないことがある.
+        win32clipboard.EmptyClipboard()
 
         # 確保した領域に書き込んだ内容をクリップボードに書き込む.
         ret = True
@@ -74,7 +70,6 @@ class Clipboard:
         except:
             ret = False
 
-        ctypes.windll.kernel32.GlobalUnlock(hMem)
         Clipboard._close()
         return ret
 
