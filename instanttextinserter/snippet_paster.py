@@ -29,16 +29,6 @@ class SnippetPaster:
         self._macro = macro.Macro()
 
     def paste(self, abbr, phrase):
-        # 定型文貼付後に, 元々のクリップボード内容を復旧するための退避.
-        original_clipboardstr = None
-        try:
-            original_clipboardstr = clipboard.Clipboard.get()
-        except Exception as e:
-            log.warning(e)
-            log.warning('failed getting original clipboardstr.')
-            # 復旧できなくても容認する.
-            pass
-
         deployed_phrase = self._macro.deploy(phrase)
         try:
             clipboard.Clipboard.set(
@@ -75,44 +65,6 @@ class SnippetPaster:
             pass
         for i in range(backcount):
             ks.left()
-
-        # ここで退避内容を元に戻すのだが...即座に戻してしまうと,
-        # ctrl+v 貼り付けが実行される前に戻ってしまい,
-        # 常に「ただの ctrl+v で貼り付けた」挙動になってしまう.
-        #
-        # 原因は keybd_event の仕様.
-        # keybd_event はキーボード入力確定後に次に進むわけではない.
-        #
-        # 暫定対処として少しだけ sleep を入れる.
-        # @todo sleep対処療法じゃない方法が欲しい...
-        #
-        # [値の試行結果]
-        # 0.0  -> sleep無しだと, 常に退避内容がpasteされる.
-        # 0.01 -> 常に Access Denied エラーが出る.
-        # 0.1  -> 連続で定型文挿入した時にもたつくことがある
-        sleep(0.05)
-        self._retry_clipboard_set(original_clipboardstr)
-
-    def _retry_clipboard_set(self, s):
-        """
-        win32clipboard.OpenClipboard で error=5 Access Denied 例外が出る.
-        原因は不明だが, keybd_event と sleep と OpenClipboard の複合?
-        とりあえず何回か試行してみる.
-        それでもダメならエラーは無視, つまり set 失敗を容認する.
-        """
-        interval = 0.01
-        max_count = 10
-        for i in range(max_count):
-            try:
-                clipboard.Clipboard.set(s)
-                break
-            except Exception as e:
-                log.warning(e)
-                log.warning('interval:%d[s], count:(%d/%d)' \
-                            % (interval*1000, i+1, max_count))
-                log.warning('failed in _retry_clipboard_set.')
-            sleep(interval)
-        return
 
     def _get_phrase_for_copy(self, phrase):
         """
