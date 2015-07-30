@@ -46,6 +46,7 @@ class HotkeyLoader:
             name = hotkey_entry.get_name()
             modifier = hotkey_entry.get_modifier()
             keycode = hotkey_entry.get_keycode()
+            callback_parameter = hotkey_entry.get_callback_parameter()
 
             # 対応する name のコールバック関数が無ければ無効.
             #
@@ -74,7 +75,7 @@ class HotkeyLoader:
                 )
                 continue
 
-            self._hotkey_manager.register_callback(name, callback)
+            self._hotkey_manager.register_callback(name, callback, callback_parameter)
 
     def unregister_hotkeys(self):
         print "START UnregisterHotkey" # @note デバッグ用. 用済んだら消す.

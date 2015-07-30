@@ -42,6 +42,13 @@ class HotkeyEntry:
         if self._keycode == 0:
             raise RuntimeError("keycode is invalid.")
 
+        self._callback_parameter = None
+        try:
+            self._callback_parameter = ls[3]
+        except IndexError:
+            # コールバックに渡すパラメータは無くてもよい.
+            pass
+
     def get_name(self):
         return self._name
 
@@ -50,6 +57,9 @@ class HotkeyEntry:
 
     def get_keycode(self):
         return self._keycode
+
+    def get_callback_parameter(self):
+        return self._callback_parameter
 
     def _to_interger_modifier(self, modifier_string):
         """
