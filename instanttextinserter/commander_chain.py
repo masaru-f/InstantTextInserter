@@ -13,11 +13,13 @@ class CommanderChain:
         """
         self.commander = commander_system.StartingPointCommander(
             commander_system.OpenDirectoryCommander(
+            commander_system.OpenFileCommander(
             commander_system.VersionCommander(
             commander_system.ExitCommander(
             commander_system.ReloadCommander(
             commander_system.OpenSnippetDirectoryCommander(
             commander_system.OpenHotkeyConfigCommander(
+            )
             )
             )
             )

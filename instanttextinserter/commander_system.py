@@ -11,6 +11,7 @@ import endhandler
 import reloader
 import selfinfo
 
+CMD_OPEN_FILE = "open"
 CMD_OPEN_DIRECTORY = "dir"
 CMD_SHOW_VERSION   = "version"
 CMD_QUIT           = "quit"
@@ -46,6 +47,26 @@ class OpenDirectoryCommander(commander_interface.ICommander):
     def _interpret(self, command=None):
         _executer = executer.Executer()
         _executer.execute([selfinfo.PROGRAM_DIRECTORY])
+
+class OpenFileCommander(commander_interface.ICommander):
+    """
+    指定ファイルを指定引数で開く.
+    # 書式は (filepath),(parameter1),(parameter2),...
+    書式は (filepath)
+    @todo parameter対応は後でやる. *args を使う必要がある.
+    """
+    def __init__(self, next_commander=None):
+        commander_interface.ICommander.__init__(self, next_commander)
+
+    def _can_interpret(self, command):
+        if command==CMD_OPEN_FILE:
+            return True
+        return False
+
+    def _interpret(self, command=None):
+        _executer = executer.Executer()
+        if _executer.execute([command])==False:
+            dialog_wrapper.ok("プログラムの起動に失敗しました\n%s" % command)
 
 class VersionCommander(commander_interface.ICommander):
     """
