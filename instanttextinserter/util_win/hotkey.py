@@ -17,6 +17,7 @@ class HotkeyConfig:
         self._modifier = None
         self._key = None
         self._callback = None
+        self._parameters = None
 
     def register_hotkey(self, modifier, key):
         """
@@ -45,11 +46,20 @@ class HotkeyConfig:
     def get_index(self):
         return self._index
 
-    def set_callback(self, callback):
+    def set_callback(self, callback, parameters=None):
+        """
+        コールバック関数に渡すパラメータは引数一つ.
+        複数の情報を渡したいなら, list なり dict なりで工夫する.
+        引数無しの場合は渡さなくてもよい.
+        """
         self._callback = callback
+        self._parameters = parameters
 
     def get_callback(self):
         return self._callback
+
+    def get_parameters(self):
+        return self._parameters
 
     def unregister_hotkey(self):
         could_unregister = ctypes.windll.user32.UnregisterHotKey(
@@ -95,14 +105,14 @@ class HotkeyManager:
         self._map[name] = hotkey_config
         return True
 
-    def register_callback(self, name, callback):
+    def register_callback(self, name, callback, parameters=None):
         hotkey_config = None
         try:
             hotkey_config = self._map[name]
         except KeyError:
             return
 
-        hotkey_config.set_callback(callback)
+        hotkey_config.set_callback(callback, parameters)
 
     def unregister_all(self):
         hotkey_config_list = self._map.values()
@@ -138,7 +148,8 @@ class HotkeyManager:
                     "pushee_index:" + pushee_index
                 )
 
-            callback()
+            callback_params = hotkey_config.get_parameters()
+            callback(callback_params)
 
 if __name__ == '__main__':
     pass
