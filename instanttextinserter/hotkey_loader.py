@@ -49,17 +49,11 @@ class HotkeyLoader:
             callback_parameter = hotkey_entry.get_callback_parameter()
 
             # 対応する name のコールバック関数が無ければ無効.
-            #
-            # コールバック関数が見つからないパターン
-            # - name が callback_map に対応していない(無効な名前)
-            # - name がコメント
             callback = None
             try:
                 callback = hotkey_callback_map.callback_map[name]
             except KeyError:
-                # 現状ユーザ見えの警告は出さないことにする.
-                # コメントなのか非対応nameなのかの区別がつかないから.
-                # @todo コメント時は警告出さないように修正する?
+                dialog_wrapper.ok("設定項目 %s は無効です." % name)
                 continue
 
             is_valid_hotkey = self._hotkey_manager.register_hotkey(
@@ -70,8 +64,8 @@ class HotkeyLoader:
             # 何回も dialog が出てウザいってことは無いと思う.
             if not(is_valid_hotkey):
                 dialog_wrapper.ok(
-                    "ホットキー " + name + " の登録に失敗しました." +
-                    os.linesep + "ErrorCode:" + str(win32api.GetLastError())
+                    "ホットキー %s の登録に失敗しました.\nErrorCode: %s" \
+                    % (name, str(win32api.GetLastError()))
                 )
                 continue
 
