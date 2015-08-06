@@ -51,7 +51,7 @@ class HotkeyLoader:
             # 対応する name のコールバック関数が無ければ無効.
             callback = None
             try:
-                callback = hotkey_callback_map.callback_map[name]
+                callback = hotkey_callback_map.get(name)
             except KeyError:
                 dialog_wrapper.ok("設定項目 %s は無効です." % name)
                 continue

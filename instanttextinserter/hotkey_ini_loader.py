@@ -16,16 +16,24 @@ class HotkeyEntry:
     設定ファイルから読み込んだ, ホットキー設定一つ分.
     """
     SEPARATOR = ","
-    def __init__(self, line):
+    def __init__(self, line, id_=None):
         """
         @param line "(name),(modifier),(key)" なる文字列
-        @exception RuntimeError 入力文字列の形式が不正
+        @param id_ この HotKeyEntry の識別子.
+                   一意性は呼び出し元で確保する.
+                   HotKeyEntry 毎に異なる文字列を作りたい場合に使う.
+                   (作りたい文字列に id を付加すれば一意の文字列になる)
+        @exception RuntimeError 登録不要時(書式不正を含む)
+                                    ~~~~~~
+                                    だからコメント検出時も投げる.
         """
+        self._id = id_
+
         ls = line.split(HotkeyEntry.SEPARATOR)
         ls = [elm.strip() for elm in ls]
 
         try:
-            self._name = ls[0]
+            self._name = self._convert_to_unique_name(ls[0])
             self._modifier = self._to_interger_modifier(ls[1])
             self._keycode = self._to_interger_keycode(ls[2])
         except IndexError:
@@ -60,6 +68,16 @@ class HotkeyEntry:
 
     def get_callback_parameter(self):
         return self._callback_parameter
+
+    def _convert_to_unique_name(self, name):
+        """
+        一意に変換する必要のある名前については, ここで変換する.
+        ここをいじったら, callback map 側 get () 関数の判定処理も併せて直す.
+        @exception TypeError idが指定されていないのに変換が走った
+        """
+        if name=='open':
+            return '%s%d' % (name, self._id)
+        return name
 
     def _to_interger_modifier(self, modifier_string):
         """
@@ -115,12 +133,13 @@ class HotkeyIniLoader:
 
         # 書式が有効な設定のみ抽出
         ret_list = []
-        for line in self._content:
+        for i in range(len(self._content)):
+            line = self._content[i]
             hotkey_entry = None
             try:
-                hotkey_entry = HotkeyEntry(line)
+                hotkey_entry = HotkeyEntry(line, id_=i)
             except RuntimeError:
-                # 書式が不正な分は無視.
+                # 書式不正 or コメント時はskip
                 continue
             ret_list.append(copy.deepcopy(hotkey_entry))
 

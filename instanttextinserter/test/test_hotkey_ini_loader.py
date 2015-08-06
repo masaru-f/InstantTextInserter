@@ -100,6 +100,17 @@ class HotkeyEntryTest(unittest.TestCase):
         except RuntimeError:
             pass
 
+    def test_HotkeyEntry_SpecialNames(self):
+        def assert_entry(line, id_, exp_name):
+            hotkey_entry = hotkey_ini_loader.HotkeyEntry(line, id_)
+            self.assertEqual(hotkey_entry.get_name(), exp_name)
+
+        def create_linestr(name):
+            return '%s,cs,a' % name
+        assert_entry(create_linestr("open"), 1, "open1")
+        assert_entry(create_linestr("open"), 10, "open10")
+        assert_entry(create_linestr("open"), 100, "open100")
+
     def test_IniLoader(self):
         """
         マジックナンバーは,
