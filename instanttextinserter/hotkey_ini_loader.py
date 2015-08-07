@@ -41,6 +41,7 @@ class HotkeyEntry:
 
         if len(self._name)==0:
             raise RuntimeError("name is empty.")
+        # Comment <- どうも見逃しちゃうので無駄コメントだけどあえて書いた
         if self._name[0] == ';':
             raise RuntimeError("this name is comment.")
 
@@ -50,9 +51,9 @@ class HotkeyEntry:
         if self._keycode == 0:
             raise RuntimeError("keycode is invalid.")
 
-        self._callback_parameter = None
+        self._callback_parameters = None
         try:
-            self._callback_parameter = ls[3]
+            self._callback_parameters = ls[3:]
         except IndexError:
             # コールバックに渡すパラメータは無くてもよい.
             pass
@@ -67,7 +68,7 @@ class HotkeyEntry:
         return self._keycode
 
     def get_callback_parameter(self):
-        return self._callback_parameter
+        return self._callback_parameters
 
     def _convert_to_unique_name(self, name):
         """

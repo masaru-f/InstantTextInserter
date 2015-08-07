@@ -51,9 +51,6 @@ class OpenDirectoryCommander(commander_interface.ICommander):
 class OpenFileCommander(commander_interface.ICommander):
     """
     指定ファイルを指定引数で開く.
-    # 書式は (filepath),(parameter1),(parameter2),...
-    書式は (filepath)
-    @todo parameter対応は後でやる. *args を使う必要がある.
     """
     def __init__(self, next_commander=None):
         commander_interface.ICommander.__init__(self, next_commander)
@@ -64,9 +61,26 @@ class OpenFileCommander(commander_interface.ICommander):
         return False
 
     def _interpret(self, command=None):
+        """
+        command の書式
+        (programname),(parameter)
+        """
         _executer = executer.Executer()
-        if _executer.execute([command])==False:
-            dialog_wrapper.ok("プログラムの起動に失敗しました\n%s" % command)
+
+        _command, _parameter = None, None
+        try:
+            _command = command[0]
+            _parameter = command[1]
+        except IndexError:
+            pass
+
+        _executer_arg = [_command]
+        if _parameter:
+            _executer_arg.append(_parameter)
+
+        if _executer.execute(_executer_arg)==False:
+            dialog_wrapper.ok("プログラムの起動に失敗しました\ncmd:%s\nprm:%s" \
+                              % (_command, _parameter))
 
 class VersionCommander(commander_interface.ICommander):
     """
