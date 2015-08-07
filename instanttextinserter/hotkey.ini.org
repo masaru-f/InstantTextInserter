@@ -1,18 +1,34 @@
-;バリエーション
-;awcs1つ, 2つ, 3つ, 4つ
-;a-z, 0-9, f1-f12, n0-n9, 方向, その他(convert, capslock, pause)
+;バリエーションを試すなら以下.
+; * awcs1つ, 2つ, 3つ, 4つ
+; * a-z, 0-9, f1-f12, n0-n9, 方向, その他(convert, capslock, pause)
+
+;基本
 reload, cs, r
 open_snippet_folder, cs, s
 open_hotkey_config, cs, h
+version, cs, v
 
-;有効だけどコメントアウト
-;ホットキー自体は登録されないし, エラーダイアログも出ない
+;open系
+;プログラム
+open, cs, 1, notepad.exe
+;ファイル(関連付けられたアプリで開く)
+open, cs, 2, .\hotkey.ini
+;プログラム + 引数
+open, cs, 3, notepad.exe, .\hotkey.ini
+;存在しないプログラム → 開けない旨のエラーダイアログ
+open, cs, 4, notfoundprogram
+;存在しないプログラムとパラメータ
+open, cs, 5, notfoundprogram, invalidparameter
+;内容が空でも死んだりしないよね?
+open, cs, 6
+
+;エラー系
+; 1:コメントアウトされた設定
+;   ホットキー自体は登録されないし, エラーダイアログも出ない
 ;version, cw, v
-
-;既に割り当てられたホットキー
-;エラーダイアログが出るはず
+; 2:既に割り当てられたホットキー
+;   これを有効にすると, エラーダイアログが出るはず
 ;version, ca, r
-
-;無効な設定
-;エラーダイアログは出ない(内部で隠蔽する)
+; 3:無効な設定
+;   これを有効にすると, エラーダイアログが出るはず
 ;invalid_name, cs, a
