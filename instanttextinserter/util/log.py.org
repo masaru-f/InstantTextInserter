@@ -3,7 +3,8 @@
 from log_impl import *
 
 _loginstance = Log()
-_loginstance.set_filteringlv(LEVEL.debug)
+# ここでデフォルト出力レベルを指定
+_loginstance.set_filteringlv(LEVEL.warning)
 
 def use_debug():
     _loginstance.set_filteringlv(LEVEL.debug)

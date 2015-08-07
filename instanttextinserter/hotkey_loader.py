@@ -72,7 +72,6 @@ class HotkeyLoader:
             self._hotkey_manager.register_callback(name, callback, callback_parameter)
 
     def unregister_hotkeys(self):
-        print "START UnregisterHotkey" # @note デバッグ用. 用済んだら消す.
         self._hotkey_manager.unregister_all()
 
     def reload(self):
