@@ -13,7 +13,6 @@ g_testdata = 0
 class TerminatorStackTest(unittest.TestCase):
     """
     終了処理としてテストデータを書き換える関数を使用してテスト.
-    @todo 実行順序を試すテストが無いので追加する.
     """
     def setUp(self):
         global g_testdata

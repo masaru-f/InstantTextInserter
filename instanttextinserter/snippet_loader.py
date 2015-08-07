@@ -25,9 +25,6 @@ def _load_and_merge():
     try:
         target_filelist = os.listdir(selfinfo.SNIPPETFOLDER_FULLPATH)
     except WindowsError as e:
-        # ここに来た場合, プログラマ側のミスが原因かもしれない.
-        # ->フォルダを用意していない等.
-        # @todo 他にここに来る原因があるか調査(アクセス権無かった場合とか?).
         raise IOError(str(e))
 
     # 各ファイル内容を一つのリストにマージ.

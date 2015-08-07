@@ -82,7 +82,6 @@ class HotkeyManager:
 
     def register_hotkey(self, name, modifier, key):
         """
-        @todo エラー時の設計
         @retval False ホットキー登録に失敗
         """
         hotkey_config = None

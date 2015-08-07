@@ -84,7 +84,6 @@ class TriggerThread(
         # これだと他の ovserver に通知された snippet_container
         # も変更してしまう(参照渡しなので)恐れがあるため
         # 念のため deepcopy にする.
-        # @todo 基底クラス側で上手いこと処理できないかしら?
         #self._snippet_container = snippet_container
         self._snippet_container = copy.deepcopy(snippet_container)
         self._can_reload = True
@@ -101,24 +100,10 @@ class TriggerThread(
         self._manager.clear()
 
         # container からスニペットを一件ずつ取り出して追加.
-        # @todo container の型がコードからわかりにくいので何とかしたい.
         for key in self._snippet_container.keys():
             abbr = key
             phrase = self._snippet_container[key]
             self._manager.add(abbr, phrase)
 
 if __name__ == '__main__':
-    from time import sleep
-
-    def start(continuesec):
-        """
-        with文から抜けるために関数にしている.
-        関数化すれば return で抜けられる.
-
-        @param continuesec 何秒間動かすか.
-        """
-        with TriggerThread() as watcher:
-            watcher.start()
-            sleep(continuesec)
-    start(15)
-
+    pass

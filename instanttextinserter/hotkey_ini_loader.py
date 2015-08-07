@@ -128,7 +128,6 @@ class HotkeyIniLoader:
             raise IOError("Cannot read " + selfinfo.HOTKEYCONFIG_FULLPATH)
 
         # ––”ö‚Ì‰üs‚ğæ‚èœ‚­.
-        # @todo util ‘¤‚ğC³‚µ‚½‚¢‚ª‰e‹¿”ÍˆÍ‚ª‚Å‚©‚¢. —v¸¸.
         for i in range(len(self._content)):
             self._content[i] = self._content[i].strip(os.linesep)
 

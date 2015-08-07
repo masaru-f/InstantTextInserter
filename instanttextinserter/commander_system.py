@@ -160,25 +160,4 @@ class OpenHotkeyConfigCommander(commander_interface.ICommander):
         _executer.execute([selfinfo.HOTKEYCONFIG_FULLPATH])
 
 if __name__ == '__main__':
-    """
-    簡単なテスト.
-    """
-    def dummy_exit():
-        print "dummy_exit"
-
-    endhandler.inst.set(dummy_exit)
-
-    exitcmd = ExitCommander()
-    opendir = OpenDirectoryCommander(exitcmd)
-    ver = VersionCommander(opendir)
-    reloadcmd = ReloadCommander(ver)
-    opensnidir = OpenSnippetDirectoryCommander(reloadcmd)
-    hotkeyconfig = OpenHotkeyConfigCommander(opensnidir)
-    sp = StartingPointCommander(hotkeyconfig)
-
-    #sp.run(CMD_OPEN_DIRECTORY)
-    #sp.run(CMD_SHOW_VERSION)
-    #sp.run(CMD_RELOAD)
-    #sp.run(CMD_OPEN_SNIPPET_DIRECTORY)
-    sp.run(CMD_OPEN_HOTKEY_CONFIG)
-    #sp.run(CMD_QUIT)
+    pass

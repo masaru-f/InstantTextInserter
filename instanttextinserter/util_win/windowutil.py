@@ -37,7 +37,7 @@ def ActivateWindow(hwnd):
     # foreground なスレッドにアタッチする
     if foreground_threadid != current_threadid:
         try:
-            # @note たまに error:87 が起きるので吸収.
+            # たまに error:87 が起きるので吸収.
             # @todo error:87 の原因調査
             win32process.AttachThreadInput(
                 current_threadid,

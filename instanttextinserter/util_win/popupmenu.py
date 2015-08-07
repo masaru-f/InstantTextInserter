@@ -218,7 +218,6 @@ class Creator:
             # 現ターゲットは直後に作る新・現ターゲットの親になる.
             # push する名前は新・現ターゲットの名前.
             # (実際に新・現ターゲットを作るのは pop 時だから.)
-            # @todo 現と新・現が混在してるのでもっとわかりやすく
             self._targetstack.push(self._curtarget, name)
 
         self._curtarget = win32gui.CreatePopupMenu()
