@@ -24,6 +24,11 @@ class Executer:
             return False
 
         if len(command)==1:
+            # windows だと空のコマンドラインを与えると,
+            # なぜか MyDocument? が開かれて意味不明なのでエラーにしとく.
+            if len(command[0])==0:
+                return False
+
             try:
                 os.startfile(command[0])
                 return True

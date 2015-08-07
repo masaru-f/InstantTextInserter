@@ -67,7 +67,7 @@ class OpenFileCommander(commander_interface.ICommander):
         """
         _executer = executer.Executer()
 
-        _command, _parameter = None, None
+        _command, _parameter = '', ''
         try:
             _command = command[0]
             _parameter = command[1]
