@@ -20,8 +20,9 @@ class SnippetManager:
 
     def add(self, abbr, phrase):
         """
-        重複内容を渡されても特に検査はしない.
-        @todo 重複内容渡された時の挙動の調査, 必要ならガードなり警告出すなり.
+        重複した省略形を渡されても特に検査はしない.
+        挙動としては, 最初に渡された省略形が採用される(see input() method)が,
+        最初に何を渡すかは呼び出し元次第.
         """
         self._abbrlist.append(abbr.upper())
         self._phraselist.append(phrase)
