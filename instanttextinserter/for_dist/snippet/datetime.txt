@@ -1,4 +1,4 @@
-====now1====
+====now  ====
 %yyyy%”N%momo%ŒŽ%dd%“ú(%yj%) %hh%Žž%momo%•ª%ss%•b
-====now2====
+====time  ====
 %yy%/%momo%/%dd%(%ye%)
