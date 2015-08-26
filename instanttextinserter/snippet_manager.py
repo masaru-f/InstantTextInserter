@@ -55,9 +55,11 @@ class SnippetManager:
 
     def input(self, keycode):
         """
-        どの短縮形と一致するかを調べ,
-        一致したらペースト処理も併せて実行する.
+        どの短縮形と一致するか調べ, 一致したらペースト処理も併せて実行.
+        ただし複数件一致した場合は最長マッチに従う.
         """
+        cur_matched_idx = -1
+
         for i in range(self._list_len):
             abbr_len = len(self._abbrlist[i])
 
@@ -74,21 +76,30 @@ class SnippetManager:
                 continue
 
             # クエリの最後まで一致していたら完全に一致.
-            # 完全一致時の処理を行った後,
-            # それまでの部分一致情報を全てクリアする.
+            # 貼り付け候補として判定.
             if abbr_len-1 == self._inputlist[i]:
                 # デバッグ用
                 #print "hit:" + self._abbrlist[i]
                 #print "phrase:" + self._phraselist[i]
-                self._paster.paste(self._abbrlist[i], self._phraselist[i])
-                self._clear_all_input()
-                break
+                if cur_matched_idx==-1:
+                    cur_matched_idx = i
+                elif len(self._abbrlist[i]) > len(self._abbrlist[cur_matched_idx]):
+                    # 既に一致した短縮形と文字列長を比較し, 長い方を採用する.
+                    cur_matched_idx = i
+                continue
 
             # 比較する場所を一つずらす
             self._inputlist[i] += 1
 
         # デバッグ用.
         #print self._inputlist
+
+        # 最長マッチした短縮形, に対応する定型文を貼り付け.
+        # ここで短縮形一致判定はいったん終わるので経過情報は全部リセット.
+        if cur_matched_idx!=-1:
+            self._paster.paste(self._abbrlist[cur_matched_idx],
+                               self._phraselist[cur_matched_idx])
+            self._clear_all_input()
 
     def _clear_all_input(self):
         for j in range(self._list_len):
