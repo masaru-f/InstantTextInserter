@@ -12,6 +12,7 @@ class _CALLBACK_ENTITY:
         self.open_hotkey_config = cs.OpenHotkeyConfigCommander()
         self.version = cs.VersionCommander()
         self.open_file = cs.OpenFileCommander()
+        self.exit = cs.ExitCommander()
 
 _entity = _CALLBACK_ENTITY()
 
@@ -23,6 +24,8 @@ _callback_map = {
     "open_snippet_folder" : _entity.open_snippet_folder._interpret,
     "open_hotkey_config"  : _entity.open_hotkey_config._interpret,
     "version"             : _entity.version._interpret,
+    "exit"                : _entity.exit._interpret,
+    "quit"                : _entity.exit._interpret,
 }
 def get(keyname):
     """
