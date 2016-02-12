@@ -1,3 +1,5 @@
+# encoding: shift-jis
+
 INVALID_CHAR = "?"
 def keycode2chara(keycode):
     c = INVALID_CHAR
@@ -11,6 +13,8 @@ def keycode2chara(keycode):
         c = str(i-96)
     elif i==9:
         c = "\\t"
+    elif i==13:
+        c = '\\n'
     elif i==32:
         c = " "
     elif i==186: # chr ‚µ‚Ä‚à‘Î‰‚·‚é•¶š‚ªo‚Ä‚±‚È‚¢‚Ì‚Åd•û‚È‚­—ñ‹“...
