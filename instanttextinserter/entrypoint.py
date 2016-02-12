@@ -23,6 +23,12 @@ import hotkey_loader
 #  - sitecustomize が効かない
 #  - sys.setdefaultencoding が存在する
 # ので, ここで設定してやる必要がある.
+#
+# Q:なぜデフォルトエンコーディング設定が必要なの?
+# A:本コードにはデフォルトエンコーディング = Shift-jis という前提で
+#   で書かれたものがあるから.
+#   明示的に Shift-jis を設定してやらないと Python デフォルトの Ascii が使われ
+#   UnicodeEncodeError/UnicodeDecodeError が発生することになってしまう...
 if hasattr(sys, 'setdefaultencoding'):
     import locale
     lang, enc = locale.getdefaultlocale()
